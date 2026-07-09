@@ -1,7 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ExperienceProvider } from "@/experience/providers/experience-provider";
+import { AuthProvider } from "@/providers/auth-provider";
 import "../styles/globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 const inter = Inter({
   variable: "--font-sans-fallback",
@@ -49,7 +57,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
       <body className="bg-surface-ground flex flex-col text-neutral-50 antialiased">
-        <ExperienceProvider>{children}</ExperienceProvider>
+        <ExperienceProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ExperienceProvider>
       </body>
     </html>
   );

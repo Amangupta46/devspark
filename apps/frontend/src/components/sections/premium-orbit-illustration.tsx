@@ -11,10 +11,10 @@ export function PremiumOrbitIllustration() {
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.style.animationPlayState = isIntersecting ? "running" : "paused";
-      
+
       // Update all child elements with the animation play state class
-      const elements = containerRef.current.querySelectorAll('.orbit-animated');
-      elements.forEach(el => {
+      const elements = containerRef.current.querySelectorAll(".orbit-animated");
+      elements.forEach((el) => {
         (el as HTMLElement).style.animationPlayState = isIntersecting ? "running" : "paused";
       });
     }
@@ -23,7 +23,7 @@ export function PremiumOrbitIllustration() {
   return (
     <div
       ref={ref}
-      className="relative flex aspect-square w-full min-w-[300px] max-w-[600px] items-center justify-center pointer-events-none select-none"
+      className="pointer-events-none relative flex aspect-square w-full max-w-[600px] min-w-[300px] items-center justify-center select-none"
       style={{ perspective: "1200px" }}
       aria-hidden="true"
     >
@@ -48,24 +48,19 @@ export function PremiumOrbitIllustration() {
         .orbit-system {
           transform-style: preserve-3d;
           transform: rotateX(55deg) rotateY(-10deg) rotateZ(0deg);
-          will-change: transform;
         }
 
         .animate-orbit {
           animation: orbit-spin linear infinite;
-          will-change: transform;
         }
         .animate-orbit-reverse {
           animation: orbit-spin-reverse linear infinite;
-          will-change: transform;
         }
         .animate-float {
           animation: float-breathing 8s ease-in-out infinite;
-          will-change: transform;
         }
         .animate-pulse-glow {
           animation: pulse-glow 6s ease-in-out infinite;
-          will-change: transform, opacity;
         }
 
         @media (max-width: 768px) {
@@ -95,13 +90,13 @@ export function PremiumOrbitIllustration() {
       >
         <svg
           viewBox="0 0 800 800"
-          className="absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 overflow-visible"
+          className="absolute top-1/2 left-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 overflow-visible"
         >
           <defs>
             {/* Core Glows - 80% Amber / Gold */}
             <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(251, 191, 36, 1)" />     {/* Amber 400 */}
-              <stop offset="30%" stopColor="rgba(245, 158, 11, 0.8)" />  {/* Amber 500 */}
+              <stop offset="0%" stopColor="rgba(251, 191, 36, 1)" /> {/* Amber 400 */}
+              <stop offset="30%" stopColor="rgba(245, 158, 11, 0.8)" /> {/* Amber 500 */}
               <stop offset="100%" stopColor="rgba(245, 158, 11, 0)" />
             </radialGradient>
 
@@ -147,7 +142,10 @@ export function PremiumOrbitIllustration() {
           </defs>
 
           {/* Breathing Background Glow */}
-          <g className="orbit-animated animate-pulse-glow" style={{ animationPlayState: "paused", transformOrigin: "400px 400px" }}>
+          <g
+            className="orbit-animated animate-pulse-glow"
+            style={{ animationPlayState: "paused", transformOrigin: "400px 400px" }}
+          >
             <circle cx="400" cy="400" r="180" fill="url(#energyGlow)" filter="url(#blurIntense)" />
           </g>
 
@@ -159,48 +157,135 @@ export function PremiumOrbitIllustration() {
           {/* INNER ORBIT (Fastest, Smallest) */}
           <g
             className="orbit-animated animate-orbit"
-            style={{ animationDuration: "25s", animationPlayState: "paused", transformOrigin: "400px 400px" }}
+            style={{
+              animationDuration: "25s",
+              animationPlayState: "paused",
+              transformOrigin: "400px 400px",
+            }}
           >
-            <circle cx="400" cy="400" r="130" fill="none" stroke="url(#ringGradGold)" strokeWidth="1" />
+            <circle
+              cx="400"
+              cy="400"
+              r="130"
+              fill="none"
+              stroke="url(#ringGradGold)"
+              strokeWidth="1"
+            />
             <circle cx="400" cy="270" r="5" fill="#FBBF24" filter="url(#blurGlow)" />
             {/* Comet Trail */}
-            <path d="M 400 270 A 130 130 0 0 1 500 310" fill="none" stroke="rgba(251,191,36,0.5)" strokeWidth="2" strokeLinecap="round" />
+            <path
+              d="M 400 270 A 130 130 0 0 1 500 310"
+              fill="none"
+              stroke="rgba(251,191,36,0.5)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
           </g>
 
           {/* MIDDLE ORBIT (Reverse, Dashed Gold) */}
           <g
             className="orbit-animated animate-orbit-reverse"
-            style={{ animationDuration: "45s", animationPlayState: "paused", transformOrigin: "400px 400px" }}
+            style={{
+              animationDuration: "45s",
+              animationPlayState: "paused",
+              transformOrigin: "400px 400px",
+            }}
           >
-            <circle cx="400" cy="400" r="210" fill="none" stroke="url(#ringGradGold)" strokeWidth="1.5" strokeDasharray="4 16" />
+            <circle
+              cx="400"
+              cy="400"
+              r="210"
+              fill="none"
+              stroke="url(#ringGradGold)"
+              strokeWidth="1.5"
+              strokeDasharray="4 16"
+            />
             <circle cx="400" cy="190" r="4" fill="#ffffff" filter="url(#blurGlow)" />
-            <circle cx="400" cy="610" r="6" fill="#3B82F6" filter="url(#blurGlow)" className="desktop-particle" />
-            <path d="M 400 610 A 210 210 0 0 0 520 572" fill="none" stroke="rgba(59,130,246,0.4)" strokeWidth="2" strokeLinecap="round" className="desktop-particle" />
+            <circle
+              cx="400"
+              cy="610"
+              r="6"
+              fill="#3B82F6"
+              filter="url(#blurGlow)"
+              className="desktop-particle"
+            />
+            <path
+              d="M 400 610 A 210 210 0 0 0 520 572"
+              fill="none"
+              stroke="rgba(59,130,246,0.4)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              className="desktop-particle"
+            />
           </g>
 
           {/* OUTER ORBIT (Premium Thick Glass Ring) */}
           <g
             className="orbit-animated animate-orbit"
-            style={{ animationDuration: "65s", animationPlayState: "paused", transformOrigin: "400px 400px" }}
+            style={{
+              animationDuration: "65s",
+              animationPlayState: "paused",
+              transformOrigin: "400px 400px",
+            }}
           >
             {/* Thick translucent glass body */}
-            <circle cx="400" cy="400" r="290" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="28" />
+            <circle
+              cx="400"
+              cy="400"
+              r="290"
+              fill="none"
+              stroke="rgba(255,255,255,0.02)"
+              strokeWidth="28"
+            />
             {/* Inner & Outer sharp borders for the glass ring */}
-            <circle cx="400" cy="400" r="276" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-            <circle cx="400" cy="400" r="304" fill="none" stroke="url(#ringGradGlass)" strokeWidth="1.5" />
-            
+            <circle
+              cx="400"
+              cy="400"
+              r="276"
+              fill="none"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="1"
+            />
+            <circle
+              cx="400"
+              cy="400"
+              r="304"
+              fill="none"
+              stroke="url(#ringGradGlass)"
+              strokeWidth="1.5"
+            />
+
             {/* Satellites on the glass ring */}
             <circle cx="110" cy="400" r="4" fill="#ffffff" filter="url(#blurGlow)" />
-            <circle cx="690" cy="400" r="8" fill="#F59E0B" filter="url(#blurGlow)" className="desktop-particle" />
+            <circle
+              cx="690"
+              cy="400"
+              r="8"
+              fill="#F59E0B"
+              filter="url(#blurGlow)"
+              className="desktop-particle"
+            />
             <circle cx="400" cy="110" r="3" fill="#3B82F6" filter="url(#blurGlow)" />
           </g>
 
           {/* FARTHEST ORBIT (Reverse, Very Slow, Blue Accent) */}
           <g
             className="orbit-animated animate-orbit-reverse desktop-particle"
-            style={{ animationDuration: "100s", animationPlayState: "paused", transformOrigin: "400px 400px" }}
+            style={{
+              animationDuration: "100s",
+              animationPlayState: "paused",
+              transformOrigin: "400px 400px",
+            }}
           >
-            <circle cx="400" cy="400" r="370" fill="none" stroke="url(#ringGradBlue)" strokeWidth="1" strokeDasharray="2 12" />
+            <circle
+              cx="400"
+              cy="400"
+              r="370"
+              fill="none"
+              stroke="url(#ringGradBlue)"
+              strokeWidth="1"
+              strokeDasharray="2 12"
+            />
             <circle cx="400" cy="30" r="6" fill="none" stroke="#3B82F6" strokeWidth="2" />
             <circle cx="400" cy="30" r="2" fill="#ffffff" />
           </g>

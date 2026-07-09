@@ -1,7 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
-import { TrustedBySection } from "@/components/sections/trusted-by";
 import dynamic from "next/dynamic";
 
 const ServicesSection = dynamic(() =>
@@ -13,9 +12,6 @@ const WhyChooseUsSection = dynamic(() =>
 const PortfolioSection = dynamic(() =>
   import("@/components/sections/portfolio").then((mod) => mod.PortfolioSection),
 );
-const ProcessSection = dynamic(() =>
-  import("@/components/sections/process").then((mod) => mod.ProcessSection),
-);
 const TechStackSection = dynamic(() =>
   import("@/components/sections/tech-stack").then((mod) => mod.TechStackSection),
 );
@@ -25,8 +21,10 @@ const TestimonialsSection = dynamic(() =>
 const PricingSection = dynamic(() =>
   import("@/components/sections/pricing").then((mod) => mod.PricingSection),
 );
-const FAQSection = dynamic(() => import("@/components/sections/faq").then((mod) => mod.FAQSection));
 const CTASection = dynamic(() => import("@/components/sections/cta").then((mod) => mod.CTASection));
+const LatestInsights = dynamic(() =>
+  import("@/components/blog/latest-insights").then((mod) => mod.LatestInsights),
+);
 
 export default function Home() {
   return (
@@ -34,15 +32,13 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <HeroSection />
-        <TrustedBySection />
         <ServicesSection />
         <WhyChooseUsSection />
         <PortfolioSection />
-        <ProcessSection />
         <TechStackSection />
         <TestimonialsSection />
+        <LatestInsights />
         <PricingSection />
-        <FAQSection />
         <CTASection />
       </main>
       <Footer />

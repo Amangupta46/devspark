@@ -27,8 +27,8 @@ export function useViewport() {
         newSize = "ultrawide";
       }
 
-      setSize(prev => (prev !== newSize ? newSize : prev));
-      setIsMobile(prev => (prev !== (newSize === "mobile") ? newSize === "mobile" : prev));
+      setSize((prev) => (prev !== newSize ? newSize : prev));
+      setIsMobile((prev) => (prev !== (newSize === "mobile") ? newSize === "mobile" : prev));
     };
 
     const debouncedResize = () => {

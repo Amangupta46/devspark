@@ -11,7 +11,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MOTION_TRANSITIONS } from "@/experience/config/tokens";
-import { useSharedFrame } from "@/experience/providers/raf";
 
 export interface PremiumCardProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
@@ -27,6 +26,7 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
     const shouldReduceMotion = useReducedMotion();
     const innerRef = React.useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = React.useState(false);
+    const rafPending = React.useRef(false);
 
     // Mouse tracking values
     const mouseX = useMotionValue(0.5);
@@ -55,28 +55,29 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
 
     const glareBackgroundPosition = useTransform([glareX, glareY], ([gx, gy]) => `${gx}% ${gy}%`);
 
-    // Idle floating animation
-    const time = React.useRef(0);
-    const idleY = useMotionValue(0);
+    // RAF-gated mousemove handler to batch updates
+    const handleMouseMove = React.useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        if (shouldReduceMotion || rafPending.current) return;
+        rafPending.current = true;
 
-    useSharedFrame((_, delta) => {
-      if (shouldReduceMotion) return;
-      time.current += delta * 0.001;
-      // Gentle 4px float if not hovered, otherwise smooth out
-      const targetY = isHovered ? 0 : Math.sin(time.current * 1.5) * 4;
-      idleY.set(idleY.get() + (targetY - idleY.get()) * 0.1);
-    });
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (shouldReduceMotion) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      mouseX.set(x);
-      mouseY.set(y);
-      rawMouseX.set(e.clientX - rect.left);
-      rawMouseY.set(e.clientY - rect.top);
-    };
+        requestAnimationFrame(() => {
+          const rect = e.currentTarget?.getBoundingClientRect();
+          if (!rect) {
+            rafPending.current = false;
+            return;
+          }
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          mouseX.set(x);
+          mouseY.set(y);
+          rawMouseX.set(e.clientX - rect.left);
+          rawMouseY.set(e.clientY - rect.top);
+          rafPending.current = false;
+        });
+      },
+      [shouldReduceMotion, mouseX, mouseY, rawMouseX, rawMouseY],
+    );
 
     const handleMouseEnter = () => {
       setIsHovered(true);
@@ -111,7 +112,6 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
         style={{
           perspective: "1000px",
           transformStyle: "preserve-3d",
-          y: idleY,
         }}
         whileHover={
           shouldReduceMotion ? {} : { scale: 1.02, transition: MOTION_TRANSITIONS.cardHover }
@@ -123,21 +123,14 @@ export const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
         {...props}
       >
         <motion.div
-          className="relative h-full w-full overflow-hidden rounded-3xl border border-white/5 bg-neutral-950/40 backdrop-blur-2xl transition-all duration-500 group-hover:border-white/10 group-hover:bg-neutral-900/50 group-focus-visible:ring-2 group-focus-visible:ring-amber-500/50"
+          className="premium-card-inner relative h-full w-full overflow-hidden rounded-3xl border border-white/5 bg-neutral-950/60 transition-[border-color,background-color] duration-500 group-hover:border-white/10 group-hover:bg-neutral-900/70 group-focus-visible:ring-2 group-focus-visible:ring-amber-500/50"
           style={{
             rotateX: shouldReduceMotion ? 0 : rotateX,
             rotateY: shouldReduceMotion ? 0 : rotateY,
             transformStyle: "preserve-3d",
-            willChange: "transform",
             boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05), 0 30px 60px -15px rgba(0,0,0,0.6)",
           }}
         >
-          {/* ── Background Noise ── */}
-          <div
-            className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] mix-blend-overlay"
-            style={{ backgroundImage: "url('/noise.webp')", backgroundRepeat: "repeat" }}
-          />
-
           {/* ── Idle Gradient Mesh ── */}
           <div
             className="pointer-events-none absolute inset-0 z-0 opacity-40 transition-opacity duration-500 group-hover:opacity-20"

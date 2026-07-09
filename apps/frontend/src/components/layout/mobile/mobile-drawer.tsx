@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { marketingNavigation } from "@/config/navigation";
 import { CTAButton } from "@/components/shared/cta-button";
 import { drawerVariants, overlayVariants, itemVariants } from "@/motion/navigation";
+import { cn } from "@/lib/utils";
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -13,6 +15,7 @@ interface MobileDrawerProps {
 }
 
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
+  const pathname = usePathname();
   const drawerRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll
@@ -104,25 +107,32 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       >
         <nav className="flex h-full flex-col justify-between gap-6">
           <div className="flex flex-col gap-5">
-            {marketingNavigation.map((item) => (
-              <motion.div key={item.href} variants={itemVariants}>
-                <Link
-                  href={item.href}
-                  onClick={onClose}
-                  className="hover:text-neutral-0 text-lg font-semibold text-neutral-200 transition-colors focus:outline-none focus-visible:text-amber-400"
-                  data-component="drawer-nav-item"
-                  data-section="header"
-                  data-analytics={item.analyticsId}
-                >
-                  {item.label}
-                </Link>
-              </motion.div>
-            ))}
+            {marketingNavigation.map((item) => {
+              const isActive = pathname === item.href;
+
+              return (
+                <motion.div key={`${item.label}-${item.href}`} variants={itemVariants}>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className={cn(
+                      "text-lg font-semibold transition-colors focus:outline-none focus-visible:text-amber-400",
+                      isActive ? "text-amber-400" : "hover:text-neutral-0 text-neutral-300",
+                    )}
+                    data-component="drawer-nav-item"
+                    data-section="header"
+                    data-analytics={item.analyticsId}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.div variants={itemVariants} className="border-border-subtle border-t pt-8">
             <CTAButton
-              href="#contact"
+              href="/contact"
               label="Start a Project"
               analyticsId="nav_mobile_cta"
               section="header"

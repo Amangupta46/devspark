@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { useLenis } from "@/experience/providers/smooth-scroll";
 
 export type ScrollDirection = "up" | "down" | "none";
 
 export function useScrollDirection(thresholdY = 10, offsetThresholdY = 50) {
   const [scrollDirection, setScrollDirection] = useState<ScrollDirection>("none");
-  const [scrollY, setScrollY] = useState(0);
+  const [scrollPhase, setScrollPhase] = useState<0 | 1 | 2>(0);
 
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const updateScrollDirection = () => {
-      const currentScrollY = window.scrollY;
-
-      // Update scroll y position state
-      setScrollY(currentScrollY);
-
+  const lastScrollYRef = useCallback(() => {
+    let lastScrollY = 0;
+    return (currentScrollY: number) => {
       const diff = Math.abs(currentScrollY - lastScrollY);
+
+      // Determine phase instead of storing raw scrollY
+      let phase: 0 | 1 | 2 = 0;
+      if (currentScrollY > 200) phase = 2;
+      else if (currentScrollY > 50) phase = 1;
+
+      setScrollPhase(phase);
 
       if (currentScrollY <= offsetThresholdY) {
         setScrollDirection("none");
@@ -26,22 +27,15 @@ export function useScrollDirection(thresholdY = 10, offsetThresholdY = 50) {
       }
 
       lastScrollY = currentScrollY > 0 ? currentScrollY : 0;
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScrollDirection);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
     };
   }, [thresholdY, offsetThresholdY]);
 
-  return { scrollDirection, scrollY };
+  const handleScroll = useMemo(() => lastScrollYRef(), [lastScrollYRef]);
+
+  // Subscribe to Lenis scroll events for perfectly synced direction detection
+  useLenis((lenis) => {
+    handleScroll(lenis.scroll);
+  });
+
+  return { scrollDirection, scrollPhase };
 }

@@ -22,13 +22,13 @@ export function DesktopNav() {
 
         return (
           <Link
-            key={item.href}
+            key={`${item.label}-${item.href}`}
             href={item.href}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
             className={cn(
               "focus-visible:ring-offset-surface-ground relative rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2",
-              isActive ? "text-amber-400" : "hover:text-neutral-0 text-neutral-200",
+              isActive ? "text-amber-400" : "hover:text-neutral-0 text-neutral-300",
             )}
             data-component="nav-item"
             data-section="header"

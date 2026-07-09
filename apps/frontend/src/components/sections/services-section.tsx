@@ -13,8 +13,16 @@ export function ServicesSection() {
       <BackgroundLayer showNoise={true} showGradient={false} />
 
       {/* Ambient lighting/glows in the background to match Hero theme */}
-      <div className="pointer-events-none absolute top-1/3 left-1/3 -z-20 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.02) 0%, transparent 60%)" }} />
-      <div className="pointer-events-none absolute right-1/4 bottom-1/4 -z-20 h-[500px] w-[500px]" style={{ background: "radial-gradient(circle, rgba(20,184,166,0.015) 0%, transparent 60%)" }} />
+      <div
+        className="pointer-events-none absolute top-1/3 left-1/3 -z-20 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2"
+        style={{ background: "radial-gradient(circle, rgba(245,158,11,0.02) 0%, transparent 60%)" }}
+      />
+      <div
+        className="pointer-events-none absolute right-1/4 bottom-1/4 -z-20 h-[500px] w-[500px]"
+        style={{
+          background: "radial-gradient(circle, rgba(20,184,166,0.015) 0%, transparent 60%)",
+        }}
+      />
 
       <MaxWidth>
         <SectionHeader

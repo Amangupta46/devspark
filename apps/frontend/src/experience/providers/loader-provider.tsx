@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { usePerformance } from "../hooks/use-performance";
 
 interface LoaderContextType {
   isLoaded: boolean;
@@ -18,12 +17,9 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Instantly reveal the app on the client to avoid blocking LCP
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoaded(true);
   }, []);
 
-  return (
-    <LoaderContext.Provider value={{ isLoaded }}>
-      {children}
-    </LoaderContext.Provider>
-  );
+  return <LoaderContext.Provider value={{ isLoaded }}>{children}</LoaderContext.Provider>;
 }

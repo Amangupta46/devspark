@@ -53,7 +53,9 @@ const PremiumObject = React.memo(function PremiumObject({ tier }: { tier: Tier }
 
         {/* Outer complex glass shell */}
         <mesh ref={outerRef} castShadow receiveShadow>
-          <torusKnotGeometry args={[1.2, 0.3, 128, 32]} />
+          <torusKnotGeometry
+            args={[1.2, 0.3, tier === "mobile" ? 48 : 96, tier === "mobile" ? 12 : 24]}
+          />
           <MeshTransmissionMaterial
             backside={false}
             samples={tier === "mobile" ? 1 : 2}
@@ -99,14 +101,18 @@ const StrictParticles = React.memo(function StrictParticles({ count }: { count: 
     };
 
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      handle = (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(initParticles);
+      handle = (
+        window as unknown as { requestIdleCallback: (cb: () => void) => number }
+      ).requestIdleCallback(initParticles);
     } else {
       handle = setTimeout(initParticles, 1) as unknown as number;
     }
 
     return () => {
       if (typeof window !== "undefined" && "cancelIdleCallback" in window) {
-        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(handle);
+        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(
+          handle,
+        );
       } else {
         clearTimeout(handle);
       }
@@ -169,7 +175,7 @@ const CameraRig = React.memo(function CameraRig() {
     state.camera.position.x = currentX.current + breathX;
     state.camera.position.y = currentY.current + breathY;
     state.camera.position.z = 5.5 + Math.sin(t * 0.2) * 0.1;
-    
+
     state.camera.lookAt(0, 0, 0);
     invalidate();
   });
@@ -184,17 +190,17 @@ const InnerScene = React.memo(function InnerScene({ tier }: { tier: Tier }) {
   return (
     <>
       <fogExp2 attach="fog" args={["#0f172a", 0.06]} />
-      
+
       {/* Lighting optimized for transmission reflection */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} color="#ffffff" castShadow />
       <directionalLight position={[-5, -5, -5]} intensity={1.5} color="#818cf8" />
       <pointLight position={[2, -2, 2]} intensity={3} color="#f59e0b" />
-      
+
       <hemisphereLight intensity={1} color="#ffffff" groundColor="#0f172a" />
-      
+
       <CameraRig />
-      
+
       <group>
         <PremiumObject tier={tier} />
         <StrictParticles count={particleCount} />
@@ -204,8 +210,12 @@ const InnerScene = React.memo(function InnerScene({ tier }: { tier: Tier }) {
 });
 
 // ─── Controller & Cleanup ────────────────────────────────────────────────────
-function SceneController() {
-  const { gl, scene, invalidate } = useThree();
+function SceneController({ active = true }: { active?: boolean }) {
+  const { gl, scene, invalidate, setFrameloop } = useThree();
+
+  useEffect(() => {
+    setFrameloop(active ? "always" : "never");
+  }, [active, setFrameloop]);
 
   useEffect(() => {
     if (!gl || !gl.domElement || !gl.domElement.parentElement) return;
@@ -219,7 +229,7 @@ function SceneController() {
           gl.setAnimationLoop?.(() => {});
         }
       },
-      { threshold: 0 }
+      { threshold: 0 },
     );
     observer.observe(gl.domElement.parentElement);
 
@@ -228,7 +238,7 @@ function SceneController() {
       if (gl && gl.setAnimationLoop) {
         gl.setAnimationLoop(null);
       }
-      
+
       // Explicit disposal to prevent WebGL leaks
       // Explicit disposal to prevent WebGL leaks
       scene.traverse((object: THREE.Object3D) => {
@@ -252,10 +262,16 @@ function SceneController() {
 }
 
 // ─── Entry Point ─────────────────────────────────────────────────────────────
-export function Hero3DScene({ reducedMotion = false }: { reducedMotion?: boolean }) {
+export function Hero3DScene({
+  reducedMotion = false,
+  active = true,
+}: {
+  reducedMotion?: boolean;
+  active?: boolean;
+}) {
   const [tier, setTier] = useState<Tier>("desktop");
   const [dpr, setDpr] = useState(1.5);
-  
+
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
@@ -281,19 +297,23 @@ export function Hero3DScene({ reducedMotion = false }: { reducedMotion?: boolean
   };
 
   return (
-    <div className="h-full w-full" onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
+    <div
+      className="h-full w-full"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
       <Canvas
         camera={{ position: [0, 0, 5.5], fov: 45 }}
         dpr={dpr}
         frameloop="demand"
-        shadows
+        shadows={tier !== "mobile"}
         style={{ background: "transparent" }}
         gl={{ powerPreference: "high-performance", antialias: false }}
       >
         <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.5)}>
           <Suspense fallback={null}>
             <InnerScene tier={tier} />
-            <SceneController />
+            <SceneController active={active} />
             <AdaptiveDpr pixelated />
             <AdaptiveEvents />
           </Suspense>

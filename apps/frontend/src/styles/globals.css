@@ -286,7 +286,16 @@ html {
   background-color: var(--surface-ground);
   color: var(--neutral-50);
   font-family: var(--font-sans);
-  scroll-behavior: smooth;
+}
+
+/* Lenis smooth scroll compatibility */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
 }
 
 body {

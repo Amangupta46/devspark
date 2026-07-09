@@ -53,11 +53,11 @@ export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
-  ({ className, background = "dark", id, children, ...props }, ref) => {
+  ({ className, background = "dark", id, children, style, ...props }, ref) => {
     const bgClasses = {
       dark: "bg-neutral-900 text-neutral-50",
       darker: "bg-neutral-950 text-neutral-50",
-      glass: "bg-surface-base/60 text-neutral-50 backdrop-blur-md border-y border-border-subtle",
+      glass: "bg-surface-base/60 text-neutral-50 md:backdrop-blur-md border-y border-border-subtle",
       transparent: "bg-transparent text-neutral-50",
     };
 
@@ -72,6 +72,11 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
         )}
         data-section-id={id}
         data-scroll-anchor={id}
+        style={{
+          contentVisibility: id === "hero" ? undefined : "auto",
+          contain: id === "hero" ? undefined : "layout style paint",
+          ...style,
+        }}
         {...props}
       >
         {children}
@@ -103,7 +108,7 @@ export const ContentWrapper = React.forwardRef<HTMLDivElement, ContentWrapperPro
 ContentWrapper.displayName = "ContentWrapper";
 
 // Noise Layer
-export const NoiseLayer = () => {
+export const NoiseLayer = React.memo(() => {
   return (
     <div
       className="pointer-events-none absolute inset-0 -z-10 opacity-[0.015] mix-blend-overlay"
@@ -113,7 +118,7 @@ export const NoiseLayer = () => {
       aria-hidden="true"
     />
   );
-};
+});
 NoiseLayer.displayName = "NoiseLayer";
 
 // Gradient Layer (Radial ambient highlights)

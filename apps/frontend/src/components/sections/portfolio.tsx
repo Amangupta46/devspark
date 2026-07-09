@@ -20,9 +20,24 @@ export function PortfolioSection() {
       {/* Dynamic Background Effects */}
       <BackgroundLayer showNoise />
       <div className="pointer-events-none absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 h-[500px] w-[500px] mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 60%)" }} />
-        <div className="absolute right-1/4 bottom-1/4 h-[600px] w-[600px] mix-blend-screen" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 60%)" }} />
-        <div className="absolute top-1/2 left-1/2 h-[800px] w-[200px] -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, transparent 70%)" }} />
+        <div
+          className="absolute top-1/4 left-1/4 h-[500px] w-[500px] mix-blend-screen md:blur-[150px]"
+          style={{
+            background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute right-1/4 bottom-1/4 h-[600px] w-[600px] mix-blend-screen md:blur-[150px]"
+          style={{
+            background: "radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 h-[800px] w-[200px] -translate-x-1/2 -translate-y-1/2 rotate-45 md:blur-[150px]"
+          style={{
+            background: "radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, transparent 70%)",
+          }}
+        />
       </div>
 
       <MaxWidth className="relative z-10">
@@ -102,7 +117,7 @@ export function PortfolioSection() {
 
                       <Parallax speed={0.2}>
                         <div
-                          className="relative aspect-video w-full max-w-lg rounded-xl border border-neutral-700/50 bg-neutral-900/80 p-2 shadow-2xl backdrop-blur-xl"
+                          className="relative aspect-video w-full max-w-lg rounded-xl border border-neutral-700/50 bg-neutral-900/80 p-2 shadow-2xl md:backdrop-blur-xl"
                           style={{ transform: "translateZ(40px)" }}
                         >
                           {/* Browser Top Bar */}
@@ -125,7 +140,7 @@ export function PortfolioSection() {
                             </div>
 
                             {/* Animated floating stats using Tailwind CSS animation */}
-                            <div className="absolute top-1/4 -right-4 rounded-lg border border-neutral-700/50 bg-neutral-900/90 p-3 shadow-xl backdrop-blur-md motion-safe:animate-[bounce_4s_infinite]">
+                            <div className="absolute top-1/4 -right-4 rounded-lg border border-neutral-700/50 bg-neutral-900/90 p-3 shadow-xl motion-safe:animate-[bounce_4s_infinite] md:backdrop-blur-md">
                               <div className="flex items-center gap-2">
                                 <Activity className="h-4 w-4 text-emerald-400" />
                                 <span className="text-xs font-bold text-white">+400%</span>

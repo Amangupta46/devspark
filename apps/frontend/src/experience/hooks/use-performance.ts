@@ -26,10 +26,14 @@ function initGlobals() {
   });
 
   let timeoutId: ReturnType<typeof setTimeout>;
-  window.addEventListener("resize", () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(calculateDpr, 150);
-  }, { passive: true });
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(calculateDpr, 150);
+    },
+    { passive: true },
+  );
 
   calculateDpr();
 }
@@ -42,7 +46,7 @@ export function usePerformance() {
     const update = () => setState({ reducedMotion: globalReducedMotion, dpr: globalDpr });
     subscribers.add(update);
     update(); // Ensure state is perfectly in sync on mount
-    
+
     return () => {
       subscribers.delete(update);
     };

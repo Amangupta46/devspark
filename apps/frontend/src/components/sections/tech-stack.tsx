@@ -74,12 +74,15 @@ export function TechStackSection() {
           />
         </ScrollReveal>
 
-        <ContentWrapper className="mt-20 hidden lg:block" style={{ contentVisibility: "auto", contain: "content" }}>
+        <ContentWrapper
+          className="mt-20 hidden lg:block"
+          style={{ contentVisibility: "auto", contain: "layout style" }}
+        >
           <style>{`
             @keyframes spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             @keyframes spin-ccw { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-            .tech-orbit-cw { animation: spin-cw 60s linear infinite; will-change: transform; transform-origin: 50% 50%; }
-            .tech-orbit-ccw { animation: spin-ccw 100s linear infinite; will-change: transform; transform-origin: 50% 50%; }
+            .tech-orbit-cw { animation: spin-cw 60s linear infinite; transform-origin: 50% 50%; }
+            .tech-orbit-ccw { animation: spin-ccw 100s linear infinite; transform-origin: 50% 50%; }
             @media (prefers-reduced-motion: reduce) {
               .tech-orbit-cw, .tech-orbit-ccw { animation: none !important; }
             }
@@ -136,7 +139,7 @@ export function TechStackSection() {
             </svg>
 
             {/* Orbit 1 (Inner) */}
-            <div className="absolute inset-0 z-10 tech-orbit-cw">
+            <div className="tech-orbit-cw absolute inset-0 z-10">
               <div className="absolute top-1/2 left-1/2 h-[50%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-800/50" />
               {INNER_NODES.map((node, i) => {
                 const pos = getPos(i, INNER_NODES.length, innerRadius);
@@ -148,7 +151,10 @@ export function TechStackSection() {
                     className="absolute h-16 w-32 -translate-x-1/2 -translate-y-1/2"
                     style={{ left: pos.x, top: pos.y }}
                   >
-                    <div className="h-full w-full tech-orbit-ccw" style={{ animationDuration: "60s" }}>
+                    <div
+                      className="tech-orbit-ccw h-full w-full"
+                      style={{ animationDuration: "60s" }}
+                    >
                       <div
                         className="h-full w-full transition-transform duration-300"
                         style={{
@@ -180,7 +186,7 @@ export function TechStackSection() {
             </div>
 
             {/* Orbit 2 (Outer) */}
-            <div className="absolute inset-0 z-10 tech-orbit-ccw">
+            <div className="tech-orbit-ccw absolute inset-0 z-10">
               <div className="absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-800/30" />
               {OUTER_NODES.map((node, i) => {
                 const pos = getPos(i, OUTER_NODES.length, outerRadius);
@@ -192,7 +198,10 @@ export function TechStackSection() {
                     className="absolute h-16 w-28 -translate-x-1/2 -translate-y-1/2"
                     style={{ left: pos.x, top: pos.y }}
                   >
-                    <div className="h-full w-full tech-orbit-cw" style={{ animationDuration: "100s" }}>
+                    <div
+                      className="tech-orbit-cw h-full w-full"
+                      style={{ animationDuration: "100s" }}
+                    >
                       <div
                         className="h-full w-full transition-transform duration-300"
                         style={{
@@ -226,12 +235,12 @@ export function TechStackSection() {
             {/* Centerpiece Component */}
             <div className="pointer-events-auto absolute top-1/2 left-1/2 z-30 h-40 w-40 -translate-x-1/2 -translate-y-1/2">
               {/* Fake shadow for performance */}
-              <div className="absolute inset-[-20px] rounded-full bg-blue-500/20 blur-xl pointer-events-none" />
+              <div className="pointer-events-none absolute inset-[-20px] rounded-full bg-blue-500/20 blur-xl" />
               <PremiumCard
                 glowColor="hsla(210,100%,60%,0.3)"
                 className="relative flex h-full w-full items-center justify-center rounded-full border border-neutral-700/50 bg-neutral-900/80 p-0"
               >
-                <div className="flex flex-col items-center text-center relative z-10">
+                <div className="relative z-10 flex flex-col items-center text-center">
                   <Sparkles className="mb-2 h-6 w-6 text-blue-400" />
                   <span className="px-2 text-xs leading-tight font-bold text-white">
                     DevSpark
@@ -243,11 +252,11 @@ export function TechStackSection() {
                 {!reducedMotion && (
                   <>
                     <div
-                      className="absolute inset-[-10px] rounded-full border border-blue-500/20 tech-orbit-cw"
+                      className="tech-orbit-cw absolute inset-[-10px] rounded-full border border-blue-500/20"
                       style={{ animationDuration: "4s" }}
                     />
                     <div
-                      className="absolute inset-[-20px] rounded-full border border-amber-500/10 tech-orbit-ccw"
+                      className="tech-orbit-ccw absolute inset-[-20px] rounded-full border border-amber-500/10"
                       style={{ animationDuration: "8s" }}
                     />
                   </>

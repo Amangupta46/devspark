@@ -46,57 +46,21 @@ const testimonials = [
   },
 ];
 
-// Marquee logos
-const logos = [
-  "Acme Corp",
-  "GlobalNet",
-  "NexusHealth",
-  "AeroDynamics",
-  "FinTech Nova",
-  "Quantum AI",
-  "Zephyr Systems",
-  "Vanguard Web",
-  "Acme Corp",
-  "GlobalNet",
-  "NexusHealth",
-  "AeroDynamics",
-  "FinTech Nova",
-  "Quantum AI",
-  "Zephyr Systems",
-  "Vanguard Web", // duplicated for smooth loop
-];
-
 export function TestimonialsSection() {
   return (
     <Section id="testimonials" background="darker" className="relative overflow-hidden py-32">
       {/* LAYER 1: Background Atmosphere */}
       <BackgroundLayer showNoise />
       <div className="pointer-events-none absolute inset-0 z-0 opacity-40">
-        <div className="absolute top-1/4 left-1/4 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 mix-blend-screen blur-[150px]" />
-        <div className="absolute right-1/4 bottom-1/4 h-[800px] w-[800px] translate-x-1/4 translate-y-1/4 rounded-full bg-purple-500/5 mix-blend-screen blur-[150px]" />
+        <div className="absolute top-1/4 left-1/4 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 mix-blend-screen md:blur-[150px]" />
+        <div className="absolute right-1/4 bottom-1/4 h-[800px] w-[800px] translate-x-1/4 translate-y-1/4 rounded-full bg-purple-500/5 mix-blend-screen md:blur-[150px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-950/80 to-[#050505]" />
       </div>
 
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          gap: 4rem;
-          animation: marquee-scroll 40s linear infinite;
-        }
-        .marquee-container:hover .marquee-track {
-          animation-play-state: paused;
-        }
-        @keyframes marquee-scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
+
         @keyframes subtle-float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
@@ -131,7 +95,7 @@ export function TestimonialsSection() {
                     <div
                       className="floating-card"
                       style={{
-                        animation: `subtle-float ${animationDuration}s ease-in-out infinite`
+                        animation: `subtle-float ${animationDuration}s ease-in-out infinite`,
                       }}
                     >
                       <PremiumCard
@@ -145,9 +109,9 @@ export function TestimonialsSection() {
                             style={{ transform: "translateZ(20px)" }}
                           >
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-700/50 bg-neutral-800/50 text-neutral-400 shadow-inner transition-colors duration-500 group-hover:border-neutral-600 group-hover:text-white">
-                              <Quote className="h-5 w-5" />
+                              <Quote className="h-5 w-5" aria-hidden="true" />
                             </div>
-                            <div className="flex gap-1">
+                            <div className="flex gap-1" aria-hidden="true">
                               {[...Array(item.rating)].map((_, i) => (
                                 <Star key={i} className="h-4 w-4 fill-amber-500 text-amber-500" />
                               ))}
@@ -177,7 +141,7 @@ export function TestimonialsSection() {
                                 />
                               </div>
                               <div>
-                                <h4 className="text-base font-bold text-white">{item.name}</h4>
+                                <h3 className="text-base font-bold text-white">{item.name}</h3>
                                 <p className="text-sm text-neutral-400">{item.role}</p>
                               </div>
                             </div>
@@ -206,34 +170,10 @@ export function TestimonialsSection() {
           </div>
         </ContentWrapper>
 
-        {/* LAYER 3: Trust Indicators (Marquee) */}
-        <ScrollReveal delay={0.5}>
-          <div className="mt-32 border-y border-neutral-800/50 bg-neutral-900/20 py-10 backdrop-blur-sm">
-            <p className="mb-8 text-center text-sm font-semibold tracking-widest text-neutral-500 uppercase">
-              Trusted by innovative teams worldwide
-            </p>
-            <div
-              className="marquee-container mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent) w-full overflow-hidden select-none"
-              aria-label="Trusted companies marquee"
-            >
-              <div className="marquee-track px-4 py-4" aria-hidden="true">
-                {logos.map((logo, index) => (
-                  <span
-                    key={index}
-                    className="text-xl font-bold text-neutral-600 transition-colors duration-300 hover:text-neutral-300"
-                  >
-                    {logo}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-
         {/* LAYER 4: Social Proof Counters */}
         <ScrollReveal delay={0.6}>
           <div className="mt-20">
-            <div className="grid grid-cols-2 gap-8 divide-x divide-neutral-800/50 rounded-3xl border border-neutral-800/50 bg-neutral-900/30 p-8 shadow-2xl backdrop-blur-xl lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-8 divide-x divide-neutral-800/50 rounded-3xl border border-neutral-800/50 bg-neutral-900/30 p-8 shadow-2xl md:backdrop-blur-xl lg:grid-cols-4">
               <AnimatedCounter value={50} label="Projects" suffix="+" />
               <AnimatedCounter value={25} label="Clients" suffix="+" />
               <AnimatedCounter value={98} label="Satisfaction" suffix="%" />

@@ -1,10 +1,4 @@
-import {
-  Section,
-  MaxWidth,
-  ContentWrapper,
-  BackgroundLayer,
-  Grid,
-} from "@/components/layout/primitives";
+import { Section, MaxWidth, ContentWrapper, BackgroundLayer } from "@/components/layout/primitives";
 import { SectionHeader } from "@/components/shared/section-header";
 import { PremiumCard } from "@/components/ui/premium-card";
 
@@ -19,65 +13,45 @@ export function PricingSection() {
           description="Select a subscription retainer or project-based outline that fits your current requirements."
         />
         <ContentWrapper>
-          <Grid cols={1} colsMd={3} gap={6}>
+          <div className="flex w-full justify-center">
             <PremiumCard glowColor="hsla(37,93%,55%,0.15)">
-              <div className="flex flex-col space-y-4 p-8">
+              <div className="mx-auto flex max-w-2xl flex-col items-center justify-center space-y-6 p-12 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-400/20 bg-amber-400/10">
+                  <svg
+                    className="h-8 w-8 text-amber-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                </div>
                 <h3
-                  className="text-neutral-0 text-lg font-bold"
+                  className="text-neutral-0 text-2xl font-bold"
                   style={{ transform: "translateZ(10px)" }}
                 >
-                  Starter Project
+                  Pricing Locked
                 </h3>
-                <div
-                  className="text-neutral-0 text-2xl font-extrabold"
-                  style={{ transform: "translateZ(20px)" }}
+                <p
+                  className="text-base leading-relaxed text-neutral-300"
+                  style={{ transform: "translateZ(5px)" }}
                 >
-                  $5K
-                </div>
-                <p className="text-xs text-neutral-300" style={{ transform: "translateZ(5px)" }}>
-                  Basic landing pages and visual templates.
+                  Login will unlock pricing once backend authentication is connected.
                 </p>
+                <a
+                  href="/login"
+                  className="mt-4 rounded-lg bg-white/10 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                >
+                  Sign In
+                </a>
               </div>
             </PremiumCard>
-            <PremiumCard glowColor="hsla(37,93%,55%,0.15)">
-              <div className="flex flex-col space-y-4 p-8">
-                <h3
-                  className="text-neutral-0 text-lg font-bold"
-                  style={{ transform: "translateZ(10px)" }}
-                >
-                  Retainer
-                </h3>
-                <div
-                  className="text-neutral-0 text-2xl font-extrabold"
-                  style={{ transform: "translateZ(20px)" }}
-                >
-                  $10K/mo
-                </div>
-                <p className="text-xs text-neutral-300" style={{ transform: "translateZ(5px)" }}>
-                  Continuous custom development and support pipelines.
-                </p>
-              </div>
-            </PremiumCard>
-            <PremiumCard glowColor="hsla(37,93%,55%,0.15)">
-              <div className="flex flex-col space-y-4 p-8">
-                <h3
-                  className="text-neutral-0 text-lg font-bold"
-                  style={{ transform: "translateZ(10px)" }}
-                >
-                  Enterprise builds
-                </h3>
-                <div
-                  className="text-neutral-0 text-2xl font-extrabold"
-                  style={{ transform: "translateZ(20px)" }}
-                >
-                  Custom
-                </div>
-                <p className="text-xs text-neutral-300" style={{ transform: "translateZ(5px)" }}>
-                  Fully tailored AI pipelines and integrations.
-                </p>
-              </div>
-            </PremiumCard>
-          </Grid>
+          </div>
         </ContentWrapper>
       </MaxWidth>
     </Section>

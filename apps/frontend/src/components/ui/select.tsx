@@ -37,7 +37,7 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "border-border-subtle bg-surface-elevated data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out relative z-50 min-w-[8rem] overflow-hidden rounded-md border text-neutral-50 shadow-md backdrop-blur-md transition-all data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
+        "border-border-subtle bg-surface-elevated data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out relative z-50 min-w-[8rem] overflow-hidden rounded-md border text-neutral-50 shadow-md transition-all data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1 md:backdrop-blur-md",
         className,
       )}
       position={position}

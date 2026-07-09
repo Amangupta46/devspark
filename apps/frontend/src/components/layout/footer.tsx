@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { footerNavigation, legalNavigation, marketingNavigation } from "@/config/navigation";
 
 export function Footer() {
   return (
@@ -25,30 +26,16 @@ export function Footer() {
               Company
             </h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <Link
-                  href="#about"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#careers"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#contact"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+              {footerNavigation.map((item) => (
+                <li key={`${item.label}-${item.href}`}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -58,30 +45,19 @@ export function Footer() {
               Services
             </h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <Link
-                  href="#services"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Web Dev
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#services"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Mobile Apps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#services"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  AI Solutions
-                </Link>
-              </li>
+              {marketingNavigation
+                .find((n) => n.label === "Services")
+                ?.children?.slice(0, 3)
+                .map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
 
@@ -91,22 +67,16 @@ export function Footer() {
               Legal
             </h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <Link
-                  href="#privacy"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#terms"
-                  className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
-                >
-                  Terms of Service
-                </Link>
-              </li>
+              {legalNavigation.map((item) => (
+                <li key={`${item.label}-${item.href}`}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-neutral-0 text-sm text-neutral-300 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -117,13 +87,31 @@ export function Footer() {
             &copy; {new Date().getFullYear()} DevSpark. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" aria-label="Visit DevSpark GitHub profile" className="text-xs text-neutral-400 hover:text-neutral-200">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit DevSpark GitHub profile"
+              className="text-xs text-neutral-400 transition-colors hover:text-neutral-200"
+            >
               GitHub
             </a>
-            <a href="#" aria-label="Visit DevSpark Twitter profile" className="text-xs text-neutral-400 hover:text-neutral-200">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit DevSpark Twitter profile"
+              className="text-xs text-neutral-400 transition-colors hover:text-neutral-200"
+            >
               Twitter
             </a>
-            <a href="#" aria-label="Visit DevSpark LinkedIn profile" className="text-xs text-neutral-400 hover:text-neutral-200">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit DevSpark LinkedIn profile"
+              className="text-xs text-neutral-400 transition-colors hover:text-neutral-200"
+            >
               LinkedIn
             </a>
           </div>

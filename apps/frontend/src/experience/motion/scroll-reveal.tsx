@@ -37,7 +37,8 @@ export function ScrollReveal({
         opacity: shouldAnimate ? 1 : 0,
         transform: shouldAnimate ? "translateY(0)" : "translateY(20px)",
         transition: `opacity ${MOTION_TOKENS.duration.slow}s cubic-bezier(${MOTION_TOKENS.ease.outExpo.join(",")}), transform ${MOTION_TOKENS.duration.slow}s cubic-bezier(${MOTION_TOKENS.ease.outExpo.join(",")})`,
-        willChange: "transform, opacity",
+        // Only hint will-change during animation, not after it completes
+        willChange: shouldAnimate ? "auto" : "transform, opacity",
       }}
     >
       {children}
