@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Sparkles, ShieldCheck, Zap } from "lucide-react";
+import { Sparkles, ShieldCheck, Zap, LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -60,7 +60,7 @@ function FeatureBadge({
   text,
   delay,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   text: string;
   delay: number;
 }) {

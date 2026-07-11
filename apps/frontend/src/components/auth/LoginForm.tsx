@@ -9,8 +9,9 @@ import { ArrowRight, GitBranch, Globe } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { parseApiError } from "@/lib/api/error-parser";
 
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/lib/auth/auth-provider";
 import { PasswordInput } from "./PasswordInput";
 import { SocialLoginButton } from "./SocialLoginButton";
 
@@ -43,7 +44,8 @@ export function LoginForm() {
       await login(data);
       router.push("/");
     } catch (error) {
-      setLoginError(error instanceof Error ? error.message : "An unexpected error occurred");
+      const parsed = parseApiError(error);
+      setLoginError(parsed.message);
     } finally {
       setSubmitting(false);
     }

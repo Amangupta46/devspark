@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import { ExperienceProvider } from "@/experience/providers/experience-provider";
-import { AuthProvider } from "@/providers/auth-provider";
+import { AuthProvider } from "@/lib/auth/auth-provider";
+import { QueryProvider } from "@/providers/query-provider";
+import { Toaster } from "sonner";
 import "../styles/globals.css";
 
 export const viewport: Viewport = {
@@ -19,6 +21,12 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono-fallback",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const manrope = Manrope({
+  variable: "--font-heading-fallback",
   subsets: ["latin"],
   display: "swap",
 });
@@ -55,11 +63,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${manrope.variable} antialiased`}>
       <body className="bg-surface-ground flex flex-col text-neutral-50 antialiased">
-        <ExperienceProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </ExperienceProvider>
+        <QueryProvider>
+          <ExperienceProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </ExperienceProvider>
+        </QueryProvider>
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );

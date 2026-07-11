@@ -1,11 +1,5 @@
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role?: string;
-  avatarUrl?: string;
-}
-
+import { User, ApiError } from "./api";
+export type { User, ApiError };
 export interface LoginRequest {
   email: string;
   password: string;
@@ -20,14 +14,10 @@ export interface RegisterRequest {
 
 export interface LoginResponse {
   user: User;
-  token: string;
+  access: string;
+  refresh: string;
 }
 
-export interface ApiError {
-  message: string;
-  code?: string;
-  details?: Record<string, string[]>;
-}
 
 export interface AuthState {
   user: User | null;

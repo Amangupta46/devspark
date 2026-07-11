@@ -8,8 +8,9 @@ import { z } from "zod";
 import { ArrowRight, GitBranch, Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { parseApiError } from "@/lib/api/error-parser";
 
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/lib/auth/auth-provider";
 import { PasswordInput } from "./PasswordInput";
 import { SocialLoginButton } from "./SocialLoginButton";
 
@@ -52,7 +53,8 @@ export function RegisterForm() {
       });
       router.push("/");
     } catch (error) {
-      setRegisterError(error instanceof Error ? error.message : "An unexpected error occurred");
+      const parsed = parseApiError(error);
+      setRegisterError(parsed.message);
     } finally {
       setSubmitting(false);
     }

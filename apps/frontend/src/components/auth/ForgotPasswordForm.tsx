@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parseApiError } from "@/lib/api/error-parser";
 
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/lib/auth/auth-provider";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -40,7 +41,8 @@ export function ForgotPasswordForm() {
         setSuccess(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+      const parsed = parseApiError(err);
+      setError(parsed.message);
     } finally {
       setSubmitting(false);
     }

@@ -1,101 +1,67 @@
 import { LoginRequest, LoginResponse, RegisterRequest, User } from "@/types/auth";
+import { apiClient } from "@/lib/api/client";
+import { TokenManager } from "@/lib/auth/token-manager";
 
-/**
- * Placeholder Error to ensure backend integration is explicitly handled later.
- */
-class BackendNotConnectedError extends Error {
-  constructor(message: string = "Backend API not connected") {
-    super(message);
-    this.name = "BackendNotConnectedError";
-  }
+export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
+  const response = await apiClient.post<LoginResponse>("/users/login/", data);
+  TokenManager.setTokens(response.data.access, response.data.refresh);
+  const user = await getCurrentUser();
+  return { ...response.data, user };
 }
 
-/**
- * [POST] /api/auth/login
- * Logs in a user with email and password.
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function loginUser(_data: LoginRequest): Promise<LoginResponse> {
-  // TODO: Replace with real API call
-  // const response = await fetch('/api/auth/login', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(data),
-  // });
-  // if (!response.ok) throw new Error("Invalid credentials");
-  // return response.json();
-
-  // Placeholder simulating network delay and then throwing explicitly
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  throw new BackendNotConnectedError(
-    "Backend API not connected. POST /api/auth/login is required.",
-  );
+export async function registerUser(data: RegisterRequest): Promise<LoginResponse> {
+  const response = await apiClient.post<LoginResponse>("/users/register/", data);
+  // Registration usually returns tokens or we log them in directly
+  // Adjust based on the actual backend response, which from views.py returns { id, email }
+  // Wait, backend RegisterView returns 201 with ProfileSerializer. So we don't set tokens here if it doesn't return them.
+  return response.data as unknown as LoginResponse;
 }
 
-/**
- * [POST] /api/auth/register
- * Registers a new user.
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function registerUser(_data: RegisterRequest): Promise<LoginResponse> {
-  // TODO: Replace with real API call
-  // const response = await fetch('/api/auth/register', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(data),
-  // });
-  // if (!response.ok) throw new Error("Registration failed");
-  // return response.json();
-
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  throw new BackendNotConnectedError(
-    "Backend API not connected. POST /api/auth/register is required.",
-  );
-}
-
-/**
- * [POST] /api/auth/logout
- * Logs out the current user and clears session cookies/tokens.
- */
 export async function logoutUser(): Promise<void> {
-  // TODO: Replace with real API call
-  // await fetch('/api/auth/logout', { method: 'POST' });
-
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  throw new BackendNotConnectedError(
-    "Backend API not connected. POST /api/auth/logout is required.",
-  );
+  const refresh = TokenManager.getRefreshToken();
+  if (refresh) {
+    try {
+      await apiClient.post("/users/logout/", { refresh });
+    } catch {
+      // ignore
+    }
+  }
+  TokenManager.clearTokens();
 }
 
-/**
- * [GET] /api/auth/me
- * Retrieves the currently authenticated user session.
- */
 export async function getCurrentUser(): Promise<User> {
-  // TODO: Replace with real API call
-  // const response = await fetch('/api/auth/me', { method: 'GET' });
-  // if (!response.ok) throw new Error("Unauthorized");
-  // return response.json();
-
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  throw new BackendNotConnectedError("Backend API not connected. GET /api/auth/me is required.");
+  const response = await apiClient.get<User>("/users/profile/");
+  return response.data;
 }
 
-/**
- * [POST] /api/auth/forgot-password
- * Sends a password reset email.
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function forgotPassword(_email: string): Promise<void> {
-  // TODO: Replace with real API call
-  // await fetch('/api/auth/forgot-password', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ email }),
-  // });
+export async function updateProfile(data: Partial<User>): Promise<User> {
+  const response = await apiClient.patch<User>("/users/profile/", data);
+  return response.data;
+}
 
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  throw new BackendNotConnectedError(
-    "Backend API not connected. POST /api/auth/forgot-password is required.",
-  );
+export async function changePassword(data: Record<string, unknown>): Promise<void> {
+  await apiClient.post("/users/change-password/", data);
+}
+
+export async function forgotPassword(email: string): Promise<void> {
+  await apiClient.post("/users/password/reset/", { email });
+}
+
+export async function resetPassword(data: Record<string, unknown>): Promise<void> {
+  await apiClient.post("/users/password/reset/confirm/", data);
+}
+
+export async function verifyEmail(data: Record<string, unknown>): Promise<void> {
+  await apiClient.post("/users/registration/verify-email/", data);
+}
+
+export async function resendVerification(email: string): Promise<void> {
+  await apiClient.post("/users/registration/resend-email/", { email });
+}
+
+export async function googleLogin(data: Record<string, unknown>): Promise<LoginResponse> {
+  const response = await apiClient.post<LoginResponse>("/users/google/", data);
+  TokenManager.setTokens(response.data.access, response.data.refresh);
+  const user = await getCurrentUser();
+  return { ...response.data, user };
 }
