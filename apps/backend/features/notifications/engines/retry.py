@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from typing import Any
 
 from django.utils import timezone
 
@@ -17,7 +18,7 @@ class RetryEngine:
     MAX_RETRIES = 5
 
     @staticmethod
-    def calculate_next_retry(retry_count: int) -> timezone.datetime:
+    def calculate_next_retry(retry_count: int) -> Any:
         # Exponential backoff: 2^retry_count minutes
         minutes = 2**retry_count
         return timezone.now() + timedelta(minutes=minutes)

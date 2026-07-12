@@ -43,12 +43,12 @@ class LocalSearchProvider(SearchProvider):
         query_lower = query.lower()
 
         # Basic text search across all string fields
-        for doc_id, doc in self._store[index_name].items():
+        for _doc_id, doc in self._store[index_name].items():
             if not query:
                 results.append(doc)
                 continue
 
-            for key, value in doc.items():
+            for _key, value in doc.items():
                 if isinstance(value, str) and query_lower in value.lower():
                     results.append(doc)
                     break

@@ -20,7 +20,9 @@ export interface TaskFilters extends PaginationParams {
 // ----------------------------------------------------------------------------
 
 export async function getProjects(params?: ProjectFilters): Promise<PaginatedResponse<Project>> {
-  const response = await apiClient.get<PaginatedResponse<Project>>("/projects/projects/", { params });
+  const response = await apiClient.get<PaginatedResponse<Project>>("/projects/projects/", {
+    params,
+  });
   return response.data;
 }
 
@@ -48,7 +50,9 @@ export async function deleteProject(id: string): Promise<void> {
 // ----------------------------------------------------------------------------
 
 export async function getTasks(params?: TaskFilters): Promise<PaginatedResponse<ProjectTask>> {
-  const response = await apiClient.get<PaginatedResponse<ProjectTask>>("/projects/tasks/", { params });
+  const response = await apiClient.get<PaginatedResponse<ProjectTask>>("/projects/tasks/", {
+    params,
+  });
   return response.data;
 }
 
@@ -76,7 +80,9 @@ export async function deleteTask(id: string): Promise<void> {
 // ----------------------------------------------------------------------------
 
 export async function getTimeLogs(params?: PaginationParams): Promise<PaginatedResponse<TimeLog>> {
-  const response = await apiClient.get<PaginatedResponse<TimeLog>>("/projects/timelogs/", { params });
+  const response = await apiClient.get<PaginatedResponse<TimeLog>>("/projects/timelogs/", {
+    params,
+  });
   return response.data;
 }
 

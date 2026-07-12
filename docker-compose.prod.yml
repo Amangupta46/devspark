@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: devspark_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/var/www/static
+      - media_volume:/var/www/media
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_started
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: devspark_frontend
+    env_file:
+      - apps/frontend/.env.local.example
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: devspark_backend
+    command: gunicorn --bind 0.0.0.0:8000 --workers 4 config.wsgi:application
+    env_file:
+      - apps/backend/.env.example
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  celery:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: devspark_celery
+    command: celery -A config worker -l INFO
+    env_file:
+      - apps/backend/.env.example
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  celery-beat:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: devspark_celery_beat
+    command: celery -A config beat -l INFO
+    env_file:
+      - apps/backend/.env.example
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  flower:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: devspark_flower
+    command: celery -A config flower --port=5555
+    env_file:
+      - apps/backend/.env.example
+    depends_on:
+      celery:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: devspark_postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=devspark
+      - POSTGRES_PASSWORD=devsparkpass
+      - POSTGRES_DB=devsparkdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devspark -d devsparkdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: devspark_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - devspark_network
+    restart: unless-stopped
+
+networks:
+  devspark_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  certbot_conf:
+  certbot_www:

@@ -1,8 +1,15 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
-import { getContacts, getContact, createContact, updateContact, deleteContact, PaginationParams } from '@/lib/api/crm';
-import { Contact } from '@/types/crm';
-import { toast } from 'sonner';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
+import {
+  getContacts,
+  getContact,
+  createContact,
+  updateContact,
+  deleteContact,
+  PaginationParams,
+} from "@/lib/api/crm";
+import { Contact } from "@/types/crm";
+import { toast } from "sonner";
 
 export function useContacts(filters: PaginationParams = {}) {
   return useInfiniteQuery({
@@ -14,7 +21,7 @@ export function useContacts(filters: PaginationParams = {}) {
       if (!lastPage.next) return undefined;
       try {
         const url = new URL(lastPage.next);
-        const page = url.searchParams.get('page');
+        const page = url.searchParams.get("page");
         return page ? parseInt(page, 10) : undefined;
       } catch {
         return undefined;
@@ -38,7 +45,7 @@ export function useCreateContact() {
     mutationFn: createContact,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.contacts.all });
-      toast.success('Contact created successfully');
+      toast.success("Contact created successfully");
     },
   });
 }
@@ -60,9 +67,12 @@ export function useUpdateContact() {
     },
     onError: (err, variables, context) => {
       if (context?.previousContact) {
-        queryClient.setQueryData(queryKeys.crm.contacts.detail(variables.id), context.previousContact);
+        queryClient.setQueryData(
+          queryKeys.crm.contacts.detail(variables.id),
+          context.previousContact,
+        );
       }
-      toast.error('Failed to update contact');
+      toast.error("Failed to update contact");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.contacts.detail(variables.id) });
@@ -77,7 +87,7 @@ export function useDeleteContact() {
     mutationFn: deleteContact,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.contacts.all });
-      toast.success('Contact deleted successfully');
+      toast.success("Contact deleted successfully");
     },
   });
 }

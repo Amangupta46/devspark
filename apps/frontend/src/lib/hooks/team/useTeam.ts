@@ -1,13 +1,18 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
-  getTeamMembers, getWorklogs, createWorklog,
-  getLeaveRequests, createLeaveRequest, updateLeaveRequest,
-  getManagerDashboard, getDeveloperDashboard
-} from '@/lib/api/team';
-import { PaginationParams } from '@/lib/api/crm';
-import { LeaveRequest } from '@/types/team';
-import { toast } from 'sonner';
+  getTeamMembers,
+  getWorklogs,
+  createWorklog,
+  getLeaveRequests,
+  createLeaveRequest,
+  updateLeaveRequest,
+  getManagerDashboard,
+  getDeveloperDashboard,
+} from "@/lib/api/team";
+import { PaginationParams } from "@/lib/api/crm";
+import { LeaveRequest } from "@/types/team";
+import { toast } from "sonner";
 
 export function useTeamMembers(filters: PaginationParams = {}) {
   return useInfiniteQuery({
@@ -16,7 +21,7 @@ export function useTeamMembers(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -34,7 +39,7 @@ export function useWorklogs(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -47,7 +52,7 @@ export function useCreateWorklog() {
     mutationFn: createWorklog,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.team.worklogs.all });
-      toast.success('Worklog saved');
+      toast.success("Worklog saved");
     },
   });
 }
@@ -63,7 +68,7 @@ export function useLeaveRequests(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -76,7 +81,7 @@ export function useCreateLeaveRequest() {
     mutationFn: createLeaveRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.team.leaves.all });
-      toast.success('Leave request submitted');
+      toast.success("Leave request submitted");
     },
   });
 }
@@ -84,22 +89,26 @@ export function useCreateLeaveRequest() {
 export function useUpdateLeaveRequest() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<LeaveRequest> }) => updateLeaveRequest(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Partial<LeaveRequest> }) =>
+      updateLeaveRequest(id, data),
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.team.leaves.detail(id) });
       const previous = queryClient.getQueryData<LeaveRequest>(queryKeys.team.leaves.detail(id));
       if (previous) {
-        queryClient.setQueryData<LeaveRequest>(queryKeys.team.leaves.detail(id), { ...previous, ...data });
+        queryClient.setQueryData<LeaveRequest>(queryKeys.team.leaves.detail(id), {
+          ...previous,
+          ...data,
+        });
       }
       return { previous };
     },
-    onError: (err, variables, context) => {
+    onError: (err: unknown, variables, context) => {
       if (context?.previous) {
         queryClient.setQueryData(queryKeys.team.leaves.detail(variables.id), context.previous);
       }
-      toast.error('Failed to update leave request');
+      toast.error("Failed to update leave request");
     },
-    onSettled: (data, error, variables) => {
+    onSettled: (data, error: unknown, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.team.leaves.detail(variables.id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.team.leaves.all });
     },

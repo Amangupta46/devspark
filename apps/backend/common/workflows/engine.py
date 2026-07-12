@@ -29,18 +29,18 @@ class WorkflowEngine:
 
     @staticmethod
     def start_workflow(
-        template_id: str, entity_type: str, entity_id: str, actor=None, metadata: dict = None
+        template_id: str, entity_type: str, entity_id: str, actor=None, metadata: dict | None = None
     ) -> WorkflowInstance:
         template = WorkflowRegistry.get(template_id)
 
-        instance = WorkflowInstance.objects.create(
+        instance = WorkflowInstance.objects.create(  # type: ignore[attr-defined]
             definition_id=template.id,
             entity_type=entity_type,
             entity_id=str(entity_id),
             current_state=template.initial_state,
         )
 
-        WorkflowHistory.objects.create(
+        WorkflowHistory.objects.create(  # type: ignore[attr-defined]
             instance=instance,
             from_state="NONE",
             to_state=template.initial_state,
@@ -61,7 +61,7 @@ class WorkflowEngine:
         """
         Pushes a workflow instance through a state transition based on the action provided.
         """
-        instance = WorkflowInstance.objects.get(id=instance_id)
+        instance = WorkflowInstance.objects.get(id=instance_id)  # type: ignore[attr-defined]
         if instance.is_completed:
             raise StateMachineError("Cannot process action on a completed workflow.")
 
@@ -83,7 +83,7 @@ class WorkflowEngine:
         instance.save()
 
         # Log history
-        WorkflowHistory.objects.create(
+        WorkflowHistory.objects.create(  # type: ignore[attr-defined]
             instance=instance,
             from_state=old_state,
             to_state=new_state,

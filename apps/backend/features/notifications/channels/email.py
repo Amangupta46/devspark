@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class EmailChannel(BaseChannel):
     channel_name = "email"
 
-    def send(self, recipient, title: str, body: str, metadata: dict = None) -> bool:
+    def send(self, recipient, title: str, body: str, metadata: dict | None = None) -> bool:
         if not recipient.email:
             logger.error(f"Cannot send email to {recipient}: No email address.")
             return False

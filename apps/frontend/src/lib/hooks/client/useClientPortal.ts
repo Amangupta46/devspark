@@ -1,10 +1,12 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
-  getClientUsers, getDeliverables, getClientMessages,
-  getClientDashboard
-} from '@/lib/api/client-portal';
-import { PaginationParams } from '@/lib/api/crm';
+  getClientUsers,
+  getDeliverables,
+  getClientMessages,
+  getClientDashboard,
+} from "@/lib/api/client-portal";
+import { PaginationParams } from "@/lib/api/crm";
 
 export function useClientUsers(filters: PaginationParams = {}) {
   return useInfiniteQuery({
@@ -13,7 +15,7 @@ export function useClientUsers(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -27,7 +29,7 @@ export function useDeliverables(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -41,7 +43,7 @@ export function useClientMessages(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,

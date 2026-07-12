@@ -45,7 +45,9 @@ class GatewayService:
         return gateway.capture_payment(intent_id, **kwargs)
 
     @staticmethod
-    def refund(provider: str, payment_id: str, amount: float = None, **kwargs) -> Dict[str, Any]:
+    def refund(
+        provider: str, payment_id: str, amount: float | None = None, **kwargs
+    ) -> Dict[str, Any]:
         """
         Refunds a payment.
         """

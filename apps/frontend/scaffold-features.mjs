@@ -1,9 +1,28 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const rootDir = path.join(process.cwd(), 'apps', 'frontend', 'src', 'features');
-const features = ['crm', 'projects', 'quotes', 'finance', 'team', 'client', 'notifications', 'analytics', 'settings'];
-const subfolders = ['components', 'hooks', 'services', 'schemas', 'constants', 'utils', 'types', 'mappers'];
+const rootDir = path.join(process.cwd(), "apps", "frontend", "src", "features");
+const features = [
+  "crm",
+  "projects",
+  "quotes",
+  "finance",
+  "team",
+  "client",
+  "notifications",
+  "analytics",
+  "settings",
+];
+const subfolders = [
+  "components",
+  "hooks",
+  "services",
+  "schemas",
+  "constants",
+  "utils",
+  "types",
+  "mappers",
+];
 
 const boilerplate = {
   types: (mod) => `// DTO: Exact shape from the backend Django API
@@ -18,7 +37,9 @@ export interface ${mod.charAt(0).toUpperCase() + mod.slice(1)}UI {
   createdAt: Date;
 }
 `,
-  mappers: (mod) => `import { ${mod.charAt(0).toUpperCase() + mod.slice(1)}DTO, ${mod.charAt(0).toUpperCase() + mod.slice(1)}UI } from '../types';
+  mappers: (
+    mod,
+  ) => `import { ${mod.charAt(0).toUpperCase() + mod.slice(1)}DTO, ${mod.charAt(0).toUpperCase() + mod.slice(1)}UI } from '../types';
 
 export function map${mod.charAt(0).toUpperCase() + mod.slice(1)}(dto: ${mod.charAt(0).toUpperCase() + mod.slice(1)}DTO): ${mod.charAt(0).toUpperCase() + mod.slice(1)}UI {
   return {
@@ -69,10 +90,12 @@ export function ${mod.charAt(0).toUpperCase() + mod.slice(1)}View() {
   ARCHIVED: 'ARCHIVED'
 } as const;
 `,
-  utils: (mod) => `export function format${mod.charAt(0).toUpperCase() + mod.slice(1)}Name(name: string) {
+  utils: (
+    mod,
+  ) => `export function format${mod.charAt(0).toUpperCase() + mod.slice(1)}Name(name: string) {
   return name.trim();
 }
-`
+`,
 };
 
 function ensureDirSync(dirPath) {
@@ -81,22 +104,25 @@ function ensureDirSync(dirPath) {
   }
 }
 
-features.forEach(mod => {
+features.forEach((mod) => {
   const modPath = path.join(rootDir, mod);
   ensureDirSync(modPath);
-  
-  subfolders.forEach(sub => {
+
+  subfolders.forEach((sub) => {
     const subPath = path.join(modPath, sub);
     ensureDirSync(subPath);
-    
+
     // Create one boilerplate file per folder
-    const ext = sub === 'components' ? 'tsx' : 'ts';
-    const filename = sub === 'components' 
-      ? `${mod.charAt(0).toUpperCase() + mod.slice(1)}View.tsx`
-      : `index.${ext}`;
-    
+    const ext = sub === "components" ? "tsx" : "ts";
+    const filename =
+      sub === "components"
+        ? `${mod.charAt(0).toUpperCase() + mod.slice(1)}View.tsx`
+        : `index.${ext}`;
+
     fs.writeFileSync(path.join(subPath, filename), boilerplate[sub](mod));
   });
 });
 
-console.log(`Successfully scaffolded ${features.length} features with ${subfolders.length} architectural layers each.`);
+console.log(
+  `Successfully scaffolded ${features.length} features with ${subfolders.length} architectural layers each.`,
+);

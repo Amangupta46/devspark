@@ -1,7 +1,10 @@
 import { apiClient } from "@/lib/api/client";
-import { 
-  RevenueChartData, PipelineChartData, TaskChartData, 
-  ProjectChartData, GlobalDashboardMetrics 
+import {
+  RevenueChartData,
+  PipelineChartData,
+  TaskChartData,
+  ProjectChartData,
+  GlobalDashboardMetrics,
 } from "@/types/analytics";
 
 export async function getDashboardMetrics(): Promise<GlobalDashboardMetrics> {

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangle } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -15,7 +15,7 @@ interface State {
 
 export class GlobalErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -23,7 +23,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
@@ -39,11 +39,12 @@ export class GlobalErrorBoundary extends Component<Props, State> {
           </div>
           <h2 className="mb-2 text-xl font-semibold text-neutral-100">Something went wrong</h2>
           <p className="mb-6 max-w-md text-sm text-neutral-400">
-            {this.state.error?.message || 'An unexpected error occurred while rendering this component.'}
+            {this.state.error?.message ||
+              "An unexpected error occurred while rendering this component."}
           </p>
           <button
             onClick={() => this.setState({ hasError: false })}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+            className="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
           >
             Try again
           </button>

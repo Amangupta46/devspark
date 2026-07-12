@@ -1,6 +1,6 @@
-import { QueryClient, MutationCache, QueryCache } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { parseApiError } from '@/lib/api/error-parser';
+import { QueryClient, MutationCache, QueryCache } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { parseApiError } from "@/lib/api/error-parser";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,16 +11,18 @@ export const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error) => {
+    onError: (error: unknown) => {
       // Global query error handling could go here, but usually mutations are more critical to toast
-      console.error('Query Error:', error);
+      console.error("Query Error:", error);
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error) => {
+    onError: (error: unknown) => {
       const parsedError = parseApiError(error);
       toast.error(parsedError.message, {
-        description: parsedError.details ? 'Please check the form for validation errors.' : undefined,
+        description: parsedError.details
+          ? "Please check the form for validation errors."
+          : undefined,
       });
     },
   }),

@@ -1,12 +1,14 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
-  getNotifications, markNotificationAsRead,
-  getNotificationPreferences, getAnnouncements
-} from '@/lib/api/notifications';
-import { PaginationParams } from '@/lib/api/crm';
-import { NotificationMessage } from '@/types/notifications';
-import { PaginatedResponse } from '@/types/api';
+  getNotifications,
+  markNotificationAsRead,
+  getNotificationPreferences,
+  getAnnouncements,
+} from "@/lib/api/notifications";
+import { PaginationParams } from "@/lib/api/crm";
+import { NotificationMessage } from "@/types/notifications";
+import { PaginatedResponse } from "@/types/api";
 
 const POLLING_INTERVAL_MS = 30000; // Poll every 30 seconds
 
@@ -17,7 +19,7 @@ export function useNotifications(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -31,12 +33,12 @@ export function useNotifications(filters: PaginationParams = {}) {
  */
 export function useUnreadNotificationsCount() {
   const { data } = useNotifications();
-  
+
   if (!data) return 0;
-  
+
   let unreadCount = 0;
   for (const page of data.pages) {
-    unreadCount += page.results.filter(n => !n.is_read).length;
+    unreadCount += page.results.filter((n) => !n.is_read).length;
   }
   return unreadCount;
 }
@@ -51,21 +53,23 @@ export function useMarkNotificationAsRead() {
       await queryClient.cancelQueries({ queryKey: queryKeyPrefix });
 
       // Iterate through all infinite queries in cache matching the notifications key
-      const activeQueries = queryClient.getQueriesData<import('@tanstack/react-query').InfiniteData<PaginatedResponse<NotificationMessage>>>({ 
+      const activeQueries = queryClient.getQueriesData<
+        import("@tanstack/react-query").InfiniteData<PaginatedResponse<NotificationMessage>>
+      >({
         queryKey: queryKeyPrefix,
-        exact: false 
+        exact: false,
       });
 
       activeQueries.forEach(([key, previousData]) => {
         if (previousData) {
           const newData = {
             ...previousData,
-            pages: previousData.pages.map(page => ({
+            pages: previousData.pages.map((page) => ({
               ...page,
-              results: page.results.map(notification => 
-                notification.id === id ? { ...notification, is_read: true } : notification
-              )
-            }))
+              results: page.results.map((notification) =>
+                notification.id === id ? { ...notification, is_read: true } : notification,
+              ),
+            })),
           };
           queryClient.setQueryData(key, newData);
         }
@@ -80,11 +84,12 @@ export function useMarkNotificationAsRead() {
 export function useNotificationPreferences(filters: PaginationParams = {}) {
   return useInfiniteQuery({
     queryKey: queryKeys.notifications.preferences.list(filters as Record<string, unknown>),
-    queryFn: async ({ pageParam = 1 }) => getNotificationPreferences({ ...filters, page: pageParam }),
+    queryFn: async ({ pageParam = 1 }) =>
+      getNotificationPreferences({ ...filters, page: pageParam }),
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -98,7 +103,7 @@ export function useAnnouncements(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,

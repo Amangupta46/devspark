@@ -1,14 +1,14 @@
 import { Variants } from "framer-motion";
 
 export const TRANSITION_SPRING = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 300,
   damping: 30,
 };
 
 export const TRANSITION_EASE = {
-  type: "tween",
-  ease: [0.16, 1, 0.3, 1], // ease-out
+  type: "tween" as const,
+  ease: [0.16, 1, 0.3, 1] as [number, number, number, number], // ease-out
   duration: 0.4,
 };
 

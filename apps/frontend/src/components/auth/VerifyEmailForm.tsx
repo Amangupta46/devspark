@@ -55,9 +55,24 @@ export function VerifyEmailForm() {
             className="flex flex-col items-center gap-4"
           >
             <div className="relative flex h-16 w-16 items-center justify-center">
-              <svg className="h-full w-full animate-spin text-amber-400" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
-                <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" className="opacity-75" />
+              <svg
+                className="h-full w-full animate-spin text-amber-400"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="opacity-25"
+                />
+                <path
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  className="opacity-75"
+                />
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white">Verifying your email...</h3>

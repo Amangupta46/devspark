@@ -63,13 +63,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${manrope.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable} ${manrope.variable} antialiased`}
+    >
       <body className="bg-surface-ground flex flex-col text-neutral-50 antialiased">
         <QueryProvider>
           <ExperienceProvider>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </ExperienceProvider>
         </QueryProvider>
         <Toaster position="bottom-right" richColors />

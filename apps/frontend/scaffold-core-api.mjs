@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const rootDir = path.join(process.cwd(), 'apps', 'frontend', 'src', 'core', 'lib');
+const rootDir = path.join(process.cwd(), "apps", "frontend", "src", "core", "lib");
 
 const files = {
-  'api.ts': `import axios from 'axios';
+  "api.ts": `import axios from 'axios';
 import { requestInterceptor, responseInterceptor, errorInterceptor } from './interceptors';
 
 export const api = axios.create({
@@ -26,7 +26,7 @@ export const uploadClient = axios.create({
   },
 });
 `,
-  'interceptors.ts': `import { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+  "interceptors.ts": `import { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { tokenManager } from './token-manager';
 import { handleError } from './error-handler';
 
@@ -47,7 +47,7 @@ export const errorInterceptor = async (error: AxiosError) => {
   return handleError(error);
 };
 `,
-  'token-manager.ts': `class TokenManager {
+  "token-manager.ts": `class TokenManager {
   private token: string | null = null;
   private isRefreshing = false;
   private refreshQueue: Array<(token: string) => void> = [];
@@ -63,7 +63,7 @@ export const errorInterceptor = async (error: AxiosError) => {
 
 export const tokenManager = new TokenManager();
 `,
-  'error-handler.ts': `import { AxiosError } from 'axios';
+  "error-handler.ts": `import { AxiosError } from 'axios';
 
 export const handleError = (error: AxiosError) => {
   if (error.response) {
@@ -79,7 +79,7 @@ export const handleError = (error: AxiosError) => {
   }
   return Promise.reject(error);
 };
-`
+`,
 };
 
 Object.entries(files).forEach(([filename, content]) => {

@@ -15,17 +15,17 @@ export function DashboardShell({ children }: DashboardShellProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen w-full bg-surface-ground overflow-hidden">
+    <div className="bg-surface-ground flex h-screen w-full overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden md:block">
         <Sidebar />
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-1 min-w-0 h-full">
+      <div className="flex h-full min-w-0 flex-1 flex-col">
         <Navbar />
-        
-        <main className="flex-1 overflow-y-auto custom-scrollbar relative">
+
+        <main className="custom-scrollbar relative flex-1 overflow-y-auto">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={pathname}
@@ -33,7 +33,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
               animate="animate"
               exit="exit"
               variants={pageTransition}
-              className="p-6 md:p-8 max-w-7xl mx-auto w-full min-h-full"
+              className="mx-auto min-h-full w-full max-w-7xl p-6 md:p-8"
             >
               {children}
             </motion.div>

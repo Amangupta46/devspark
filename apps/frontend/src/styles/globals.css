@@ -6,56 +6,58 @@
     var(--font-sans-fallback), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   --font-mono: var(--font-mono-fallback), "JetBrains Mono", "Fira Code", "Consolas", monospace;
-  --font-heading: var(--font-heading-fallback), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading:
+    var(--font-heading-fallback), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 
   /* ─── New Neutral Scale ($100M SaaS Dark Theme) ─── */
   --neutral-950: #050505;
-  --neutral-900: #0A0A0A; /* Background */
+  --neutral-900: #0a0a0a; /* Background */
   --neutral-850: #111111; /* Surface */
   --neutral-800: #161616; /* Cards */
   --neutral-700: #262626;
   --neutral-600: #404040;
   --neutral-500: #525252;
-  --neutral-400: #71717A; /* Muted */
-  --neutral-300: #A1A1AA; /* Secondary Text */
-  --neutral-200: #D4D4D8;
-  --neutral-100: #F4F4F5;
-  --neutral-50:  #FAFAFA;
-  --neutral-0:   #FFFFFF; /* Text */
+  --neutral-400: #71717a; /* Muted */
+  --neutral-300: #a1a1aa; /* Secondary Text */
+  --neutral-200: #d4d4d8;
+  --neutral-100: #f4f4f5;
+  --neutral-50: #fafafa;
+  --neutral-0: #ffffff; /* Text */
 
   /* ─── Accent Primary (Indigo) ─── */
-  --indigo-50:  #EEF2FF;
-  --indigo-100: #E0E7FF;
-  --indigo-200: #C7D2FE;
-  --indigo-300: #A5B4FC;
-  --indigo-400: #818CF8;
-  --indigo-500: #6366F1; /* Primary */
-  --indigo-600: #4F46E5;
-  --indigo-700: #4338CA;
-  --indigo-800: #3730A3;
-  --indigo-900: #312E81;
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1; /* Primary */
+  --indigo-600: #4f46e5;
+  --indigo-700: #4338ca;
+  --indigo-800: #3730a3;
+  --indigo-900: #312e81;
 
   /* ─── Accent Secondary (Purple) ─── */
-  --purple-50:  #FAF5FF;
-  --purple-100: #F3E8FF;
-  --purple-200: #E9D5FF;
-  --purple-300: #D8B4FE;
-  --purple-400: #C084FC;
-  --purple-500: #A855F7;
-  --purple-600: #9333EA;
-  --purple-700: #7E22CE;
-  --purple-800: #6B21A8;
-  --purple-900: #581C87;
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-300: #d8b4fe;
+  --purple-400: #c084fc;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
+  --purple-700: #7e22ce;
+  --purple-800: #6b21a8;
+  --purple-900: #581c87;
 
   /* ─── Semantic Colors ─── */
-  --success-400: #34D399;
-  --success-500: #10B981; /* Emerald */
-  --warning-400: #FBBF24;
-  --warning-500: #F59E0B; /* Amber */
-  --error-400:   #F87171;
-  --error-500:   #EF4444; /* Red */
-  --info-400:    #60A5FA;
-  --info-500:    #3B82F6; /* Blue */
+  --success-400: #34d399;
+  --success-500: #10b981; /* Emerald */
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b; /* Amber */
+  --error-400: #f87171;
+  --error-500: #ef4444; /* Red */
+  --info-400: #60a5fa;
+  --info-500: #3b82f6; /* Blue */
 
   /* ─── Glow Colors ─── */
   --primary-glow-sm: rgba(99, 102, 241, 0.1);
@@ -67,9 +69,9 @@
 
   /* ─── Surfaces ─── */
   --surface-ground: var(--neutral-900); /* #0A0A0A */
-  --surface-base: var(--neutral-850);   /* #111111 */
+  --surface-base: var(--neutral-850); /* #111111 */
   --surface-raised: var(--neutral-800); /* #161616 */
-  --surface-elevated: #1A1A1A;
+  --surface-elevated: #1a1a1a;
   --surface-floating: #202020;
   --surface-overlay: rgba(0, 0, 0, 0.7);
 

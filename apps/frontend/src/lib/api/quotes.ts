@@ -11,8 +11,12 @@ export interface QuoteFilters extends PaginationParams {
 // Catalog
 // ----------------------------------------------------------------------------
 
-export async function getCatalog(params?: PaginationParams): Promise<PaginatedResponse<ServiceCatalog>> {
-  const response = await apiClient.get<PaginatedResponse<ServiceCatalog>>("/quotes/catalog/", { params });
+export async function getCatalog(
+  params?: PaginationParams,
+): Promise<PaginatedResponse<ServiceCatalog>> {
+  const response = await apiClient.get<PaginatedResponse<ServiceCatalog>>("/quotes/catalog/", {
+    params,
+  });
   return response.data;
 }
 
@@ -71,8 +75,12 @@ export async function removeQuoteItem(id: string): Promise<void> {
 // Proposals
 // ----------------------------------------------------------------------------
 
-export async function getProposals(params?: PaginationParams): Promise<PaginatedResponse<Proposal>> {
-  const response = await apiClient.get<PaginatedResponse<Proposal>>("/quotes/proposals/", { params });
+export async function getProposals(
+  params?: PaginationParams,
+): Promise<PaginatedResponse<Proposal>> {
+  const response = await apiClient.get<PaginatedResponse<Proposal>>("/quotes/proposals/", {
+    params,
+  });
   return response.data;
 }
 

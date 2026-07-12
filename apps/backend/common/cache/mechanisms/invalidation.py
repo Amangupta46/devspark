@@ -32,7 +32,7 @@ class CacheInvalidator:
             pass
 
 
-def invalidate_cache(keys: List[str] = None, prefix: str = None):
+def invalidate_cache(keys: List[str] | None = None, prefix: str | None = None):
     """
     Decorator to invalidate specific keys or prefixes AFTER a function completes successfully.
     """

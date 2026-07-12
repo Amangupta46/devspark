@@ -7,9 +7,11 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
+  company_name: string;
 }
 
 export interface LoginResponse {
@@ -17,7 +19,6 @@ export interface LoginResponse {
   access: string;
   refresh: string;
 }
-
 
 export interface AuthState {
   user: User | null;

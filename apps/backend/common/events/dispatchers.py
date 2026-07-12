@@ -23,13 +23,14 @@ class EventDispatcher:
 
         for subscriber in subscribers:
             try:
+
                 # If subscriber is a class implementing EventSubscriber
                 if inspect.isclass(subscriber) and issubclass(subscriber, EventSubscriber):
                     instance = subscriber()
                     instance.handle(event)
                 else:
                     # Fallback for simple callable functions
-                    subscriber(event)
+                    subscriber(event)  # type: ignore[call-arg]
             except Exception as e:
                 logger.error(f"Error dispatching {event.event_name} to {subscriber}: {e}")
 

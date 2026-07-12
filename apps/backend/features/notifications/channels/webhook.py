@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class WebhookChannel(BaseChannel):
     channel_name = "webhook"
 
-    def send(self, recipient, title: str, body: str, metadata: dict = None) -> bool:
+    def send(self, recipient, title: str, body: str, metadata: dict | None = None) -> bool:
         # Foundation for generic Webhooks
         webhook_url = metadata.get("webhook_url") if metadata else None
         if not webhook_url:

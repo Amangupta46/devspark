@@ -1,11 +1,15 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
-  getInvoices, getPayments, createPayment,
-  getEstimates, getExpenses, getSubscriptions
-} from '@/lib/api/finance';
-import { PaginationParams } from '@/lib/api/crm';
-import { toast } from 'sonner';
+  getInvoices,
+  getPayments,
+  createPayment,
+  getEstimates,
+  getExpenses,
+  getSubscriptions,
+} from "@/lib/api/finance";
+import { PaginationParams } from "@/lib/api/crm";
+import { toast } from "sonner";
 
 export function useInvoices(filters: PaginationParams = {}) {
   return useInfiniteQuery({
@@ -14,7 +18,7 @@ export function useInvoices(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -28,7 +32,7 @@ export function usePayments(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -42,7 +46,7 @@ export function useCreatePayment() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.finance.payments.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.finance.invoices.all });
-      toast.success('Payment recorded successfully');
+      toast.success("Payment recorded successfully");
     },
   });
 }
@@ -54,7 +58,7 @@ export function useEstimates(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -68,7 +72,7 @@ export function useExpenses(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -82,7 +86,7 @@ export function useSubscriptions(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,

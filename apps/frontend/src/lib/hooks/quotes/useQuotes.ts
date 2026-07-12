@@ -1,5 +1,5 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
   getQuotes,
   getQuote,
@@ -10,10 +10,10 @@ import {
   getQuoteDashboard,
   getCatalog,
   getProposals,
-} from '@/lib/api/quotes';
-import { Quote } from '@/types/quotes';
-import { PaginationParams } from '@/lib/api/crm';
-import { toast } from 'sonner';
+} from "@/lib/api/quotes";
+import { Quote } from "@/types/quotes";
+import { PaginationParams } from "@/lib/api/crm";
+import { toast } from "sonner";
 
 export function useQuotes(filters: QuoteFilters = {}) {
   return useInfiniteQuery({
@@ -25,7 +25,7 @@ export function useQuotes(filters: QuoteFilters = {}) {
       if (!lastPage.next) return undefined;
       try {
         const url = new URL(lastPage.next);
-        const page = url.searchParams.get('page');
+        const page = url.searchParams.get("page");
         return page ? parseInt(page, 10) : undefined;
       } catch {
         return undefined;
@@ -49,7 +49,7 @@ export function useCreateQuote() {
     mutationFn: createQuote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.quotes.quotes.all });
-      toast.success('Quote created successfully');
+      toast.success("Quote created successfully");
     },
   });
 }
@@ -71,9 +71,12 @@ export function useUpdateQuote() {
     },
     onError: (err, variables, context) => {
       if (context?.previousQuote) {
-        queryClient.setQueryData(queryKeys.quotes.quotes.detail(variables.id), context.previousQuote);
+        queryClient.setQueryData(
+          queryKeys.quotes.quotes.detail(variables.id),
+          context.previousQuote,
+        );
       }
-      toast.error('Failed to update quote');
+      toast.error("Failed to update quote");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.quotes.quotes.detail(variables.id) });
@@ -88,7 +91,7 @@ export function useDeleteQuote() {
     mutationFn: deleteQuote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.quotes.quotes.all });
-      toast.success('Quote deleted successfully');
+      toast.success("Quote deleted successfully");
     },
   });
 }
@@ -106,7 +109,7 @@ export function useCatalog(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -122,7 +125,7 @@ export function useProposals(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,

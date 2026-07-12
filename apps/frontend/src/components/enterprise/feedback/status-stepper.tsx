@@ -20,49 +20,45 @@ export function StatusStepper({ steps, orientation = "horizontal" }: StatusStepp
   const isHorizontal = orientation === "horizontal";
 
   return (
-    <div className={cn(
-      "flex",
-      isHorizontal ? "w-full flex-row" : "flex-col"
-    )}>
+    <div className={cn("flex", isHorizontal ? "w-full flex-row" : "flex-col")}>
       {steps.map((step, index) => {
         const isLast = index === steps.length - 1;
         const isComplete = step.status === "complete";
         const isCurrent = step.status === "current";
 
         return (
-          <div 
-            key={step.id} 
-            className={cn(
-              "relative flex flex-1",
-              isHorizontal ? "flex-col" : "flex-row gap-4"
-            )}
+          <div
+            key={step.id}
+            className={cn("relative flex flex-1", isHorizontal ? "flex-col" : "flex-row gap-4")}
           >
             {/* Connector Line */}
             {!isLast && (
-              <div 
+              <div
                 className={cn(
-                  "absolute bg-border-default transition-colors duration-500",
-                  isHorizontal 
-                    ? "left-6 right-[-24px] top-4 h-0.5" 
-                    : "left-[15px] top-10 bottom-[-16px] w-0.5",
-                  isComplete && "bg-indigo-500"
-                )} 
+                  "bg-border-default absolute transition-colors duration-500",
+                  isHorizontal
+                    ? "top-4 right-[-24px] left-6 h-0.5"
+                    : "top-10 bottom-[-16px] left-[15px] w-0.5",
+                  isComplete && "bg-indigo-500",
+                )}
               />
             )}
 
             {/* Node Container */}
-            <div className={cn(
-              "flex items-center",
-              isHorizontal ? "flex-col gap-3" : "flex-row gap-4 h-full"
-            )}>
-              <div 
+            <div
+              className={cn(
+                "flex items-center",
+                isHorizontal ? "flex-col gap-3" : "h-full flex-row gap-4",
+              )}
+            >
+              <div
                 className={cn(
                   "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300",
-                  isComplete 
-                    ? "border-indigo-500 bg-indigo-500 text-white shadow-[0_0_12px_rgba(99,102,241,0.4)]" 
+                  isComplete
+                    ? "border-indigo-500 bg-indigo-500 text-white shadow-[0_0_12px_rgba(99,102,241,0.4)]"
                     : isCurrent
-                      ? "border-indigo-500 bg-surface-base text-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.2)]"
-                      : "border-border-default bg-surface-ground text-neutral-500"
+                      ? "bg-surface-base border-indigo-500 text-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.2)]"
+                      : "border-border-default bg-surface-ground text-neutral-500",
                 )}
               >
                 {isComplete ? (
@@ -75,18 +71,22 @@ export function StatusStepper({ steps, orientation = "horizontal" }: StatusStepp
               </div>
 
               {/* Labels */}
-              <div className={cn(
-                "flex flex-col",
-                isHorizontal ? "text-center items-center" : "pt-1 pb-6"
-              )}>
-                <span className={cn(
-                  "text-sm font-semibold transition-colors duration-300",
-                  isComplete || isCurrent ? "text-neutral-0" : "text-neutral-400"
-                )}>
+              <div
+                className={cn(
+                  "flex flex-col",
+                  isHorizontal ? "items-center text-center" : "pt-1 pb-6",
+                )}
+              >
+                <span
+                  className={cn(
+                    "text-sm font-semibold transition-colors duration-300",
+                    isComplete || isCurrent ? "text-neutral-0" : "text-neutral-400",
+                  )}
+                >
                   {step.label}
                 </span>
                 {step.description && (
-                  <span className="text-xs text-neutral-500 mt-1 max-w-[120px]">
+                  <span className="mt-1 max-w-[120px] text-xs text-neutral-500">
                     {step.description}
                   </span>
                 )}

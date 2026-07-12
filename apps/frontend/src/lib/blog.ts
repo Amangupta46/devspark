@@ -3,7 +3,10 @@ import { MOCK_ARTICLES } from "@/data/mock-articles";
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/blog/posts/`, { next: { revalidate: 3600 } });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/v1/blog/posts/`,
+      { next: { revalidate: 3600 } },
+    );
     if (res.ok) {
       const data = await res.json();
       return data.results || data;
@@ -11,7 +14,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   } catch (error) {
     console.warn("Failed to fetch blog posts from API, falling back to mock data", error);
   }
-  
+
   // Fallback
   return MOCK_ARTICLES.sort(
     (a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime(),
@@ -20,14 +23,17 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/blog/posts/${slug}/`, { next: { revalidate: 3600 } });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/v1/blog/posts/${slug}/`,
+      { next: { revalidate: 3600 } },
+    );
     if (res.ok) {
       return await res.json();
     }
   } catch (error) {
     console.warn("Failed to fetch blog post by slug from API, falling back to mock data", error);
   }
-  
+
   const post = MOCK_ARTICLES.find((p) => p.slug === slug);
   return post || null;
 }

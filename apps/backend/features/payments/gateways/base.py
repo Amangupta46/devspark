@@ -24,7 +24,9 @@ class BaseGateway(ABC):
         pass
 
     @abstractmethod
-    def refund_payment(self, payment_id: str, amount: float = None, **kwargs) -> Dict[str, Any]:
+    def refund_payment(
+        self, payment_id: str, amount: float | None = None, **kwargs
+    ) -> Dict[str, Any]:
         """
         Refund a payment.
         """

@@ -10,6 +10,7 @@ from features.notifications.models import (
     NotificationPreference,
     NotificationPriority,
 )
+from features.notifications.models.templates import MessageTemplate
 from features.notifications.services import template_service
 
 from .serializers import (

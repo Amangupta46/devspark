@@ -29,7 +29,7 @@ class AuditService:
         # Override user_id if explicitly provided (e.g. background tasks acting on behalf of a user)
         effective_user_id = user_id or context.user_id
 
-        entry = AuditEntry.objects.create(
+        entry = AuditEntry.objects.create(  # type: ignore[attr-defined]
             entity_type=entity_type,
             entity_id=str(entity_id),
             action=action.upper(),
@@ -58,6 +58,6 @@ class AuditService:
         """
         Retrieves the chronological audit history for a specific entity.
         """
-        return AuditEntry.objects.filter(
+        return AuditEntry.objects.filter(  # type: ignore[attr-defined]
             entity_type=entity_type, entity_id=str(entity_id)
         ).order_by("-created_at")

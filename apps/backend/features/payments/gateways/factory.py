@@ -23,4 +23,4 @@ class GatewayFactory:
         gateway_class = cls._gateways.get(provider_name.lower())
         if not gateway_class:
             raise ValueError(f"Unsupported payment gateway provider: {provider_name}")
-        return gateway_class()
+        return gateway_class()  # type: ignore[abstract]

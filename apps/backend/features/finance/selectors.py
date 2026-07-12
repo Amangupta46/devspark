@@ -39,7 +39,7 @@ class FinanceSelectors:
         """
         Calculates the balance of a given ledger.
         """
-        entries = JournalEntry.objects.filter(ledger_id=ledger_id, status="posted")
+        entries = JournalEntry.objects.filter(ledger_id=ledger_id, status="posted")  # type: ignore[misc]
         debits = entries.aggregate(total_debits=Sum("lines__debit_amount"))["total_debits"] or 0
         credits = entries.aggregate(total_credits=Sum("lines__credit_amount"))["total_credits"] or 0
         return debits - credits

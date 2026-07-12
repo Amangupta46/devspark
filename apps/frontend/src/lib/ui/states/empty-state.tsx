@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import React, { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,7 +17,12 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon: Icon, title, description, action, className }: EmptyStateProps) {
   return (
-    <div className={cn("flex min-h-[400px] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-800 bg-neutral-900/20 p-8 text-center", className)}>
+    <div
+      className={cn(
+        "flex min-h-[400px] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-800 bg-neutral-900/20 p-8 text-center",
+        className,
+      )}
+    >
       {Icon && (
         <div className="mb-4 rounded-full bg-neutral-800/50 p-4 text-neutral-400">
           <Icon className="h-8 w-8" />

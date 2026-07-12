@@ -25,21 +25,25 @@ interface KanbanBoardProps {
 
 export function KanbanBoard({ columns }: KanbanBoardProps) {
   return (
-    <div className="flex h-full w-full gap-6 overflow-x-auto pb-4 custom-scrollbar">
+    <div className="custom-scrollbar flex h-full w-full gap-6 overflow-x-auto pb-4">
       {columns.map((col) => (
-        <div key={col.id} className="flex h-full min-w-[320px] max-w-[320px] flex-col rounded-xl bg-surface-base border border-border-default p-3">
+        <div
+          key={col.id}
+          className="bg-surface-base border-border-default flex h-full max-w-[320px] min-w-[320px] flex-col rounded-xl border p-3"
+        >
           {/* Column Header */}
           <div className="mb-4 flex items-center justify-between px-1">
             <h3 className="font-heading font-semibold text-neutral-200">
-              {col.title} <span className="ml-2 text-xs text-neutral-500 font-normal">{col.items.length}</span>
+              {col.title}{" "}
+              <span className="ml-2 text-xs font-normal text-neutral-500">{col.items.length}</span>
             </h3>
-            <button className="flex h-6 w-6 items-center justify-center rounded bg-surface-raised text-neutral-400 hover:text-neutral-50 transition-colors">
+            <button className="bg-surface-raised flex h-6 w-6 items-center justify-center rounded text-neutral-400 transition-colors hover:text-neutral-50">
               <Plus className="h-4 w-4" />
             </button>
           </div>
 
           {/* Droppable Area */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 min-h-[150px]">
+          <div className="custom-scrollbar flex min-h-[150px] flex-1 flex-col gap-3 overflow-y-auto">
             <AnimatePresence>
               {col.items.map((item) => (
                 <motion.div
@@ -50,25 +54,26 @@ export function KanbanBoard({ columns }: KanbanBoardProps) {
                   exit={{ opacity: 0, scale: 0.95 }}
                   whileHover={{ y: -2 }}
                   whileDrag={{ scale: 1.05, cursor: "grabbing" }}
-                  className="group relative flex cursor-grab flex-col gap-2 rounded-lg border border-border-subtle bg-surface-ground p-4 shadow-sm hover:border-border-prominent transition-colors"
+                  className="group border-border-subtle bg-surface-ground hover:border-border-prominent relative flex cursor-grab flex-col gap-2 rounded-lg border p-4 shadow-sm transition-colors"
                 >
                   <div className="flex items-start justify-between">
-                    <h4 className="text-sm font-medium text-neutral-200 leading-snug">
+                    <h4 className="text-sm leading-snug font-medium text-neutral-200">
                       {item.title}
                     </h4>
-                    <GripVertical className="h-4 w-4 text-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <GripVertical className="h-4 w-4 text-neutral-600 opacity-0 transition-opacity group-hover:opacity-100" />
                   </div>
-                  
+
                   {item.description && (
-                    <p className="text-xs text-neutral-400 line-clamp-2">
-                      {item.description}
-                    </p>
+                    <p className="line-clamp-2 text-xs text-neutral-400">{item.description}</p>
                   )}
 
                   {item.tags && item.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {item.tags.map(tag => (
-                        <span key={tag} className="inline-flex items-center rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-neutral-300">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-surface-raised inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium text-neutral-300"
+                        >
                           {tag}
                         </span>
                       ))}

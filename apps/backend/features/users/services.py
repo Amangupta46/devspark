@@ -46,12 +46,12 @@ class LoginService:
 
         # Check lockout
         try:
-            user = CustomUser.objects.get(email=email)
+            user = CustomUser.objects.get(email=email)  # type: ignore[assignment]
         except CustomUser.DoesNotExist:
             LoginAttempt.objects.create(
                 email=email, ip_address=ip_address, user_agent=user_agent, successful=False
             )
-            raise ValidationError("Invalid credentials.")
+            raise ValidationError("Invalid credentials.") from None
 
         if user.status == "locked":
             # Check if lockout duration has passed
@@ -71,7 +71,7 @@ class LoginService:
                 user.status = "active"
                 user.save(update_fields=["status"])
 
-        user = authenticate(email=email, password=password)
+        user = authenticate(email=email, password=password)  # type: ignore[assignment]
         if not user:
             LoginAttempt.objects.create(
                 email=email, ip_address=ip_address, user_agent=user_agent, successful=False
@@ -87,7 +87,7 @@ class LoginService:
                 db_user.save(update_fields=["status"])
                 raise ValidationError("Account locked due to multiple failed login attempts.")
 
-            raise ValidationError("Invalid credentials.")
+            raise ValidationError("Invalid credentials.") from None
 
         # Require email verification
         if not user.email_verified:

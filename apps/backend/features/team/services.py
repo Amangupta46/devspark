@@ -29,7 +29,9 @@ class ResourcePlannerService:
         leaves = LeaveRequest.objects.filter(
             member=member, status="approved", start_date__lte=end_date, end_date__gte=start_date
         )
-        leave_days = sum([min((l.end_date - l.start_date).days + 1, days) for l in leaves])
+        leave_days = sum(
+            [min((leave.end_date - leave.start_date).days + 1, days) for leave in leaves]
+        )
         leave_hours_deduction = leave_days * 8.0  # Rough conversion
 
         # Meetings

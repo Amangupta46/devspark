@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import transaction
 from django.utils import timezone
 
@@ -33,7 +35,7 @@ class EstimateService:
             project_id=estimate.project_id,
             currency_id=estimate.currency_id,
             issue_date=timezone.now().date(),
-            due_date=timezone.now().date() + timezone.timedelta(days=30),  # Default 30 days
+            due_date=timezone.now().date() + timedelta(days=30),  # Default 30 days
             notes=estimate.notes,
             terms=estimate.terms,
         )

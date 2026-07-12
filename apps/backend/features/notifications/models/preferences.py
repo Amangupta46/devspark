@@ -5,7 +5,7 @@ from common.models import BaseModel
 
 class NotificationPreference(BaseModel):
     user = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, related_name="notification_preferences"
+        "users.CustomUser", on_delete=models.CASCADE, related_name="notification_channel_preferences"
     )
     category = models.ForeignKey("notifications.NotificationCategory", on_delete=models.CASCADE)
 

@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/v1/projects/", include("features.projects.api.urls")),
     path("api/v1/team/", include("features.team.api.urls")),
     path("api/v1/client-portal/", include("features.client_portal.api.urls")),
+    path("api/notifications/", include("features.notifications.api.urls")),
     # Health checks
     path("health/", health_check, name="health_check"),
     path("ready/", ready_check, name="ready_check"),

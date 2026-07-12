@@ -87,7 +87,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, BaseModel):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    objects = CustomUserManager()
+    objects = CustomUserManager()  # type: ignore[misc,assignment]
 
     class Meta:
         verbose_name = _("user")
@@ -108,7 +108,7 @@ class UserSettings(BaseModel):
 
 class NotificationPreference(BaseModel):
     user = models.OneToOneField(
-        CustomUser, on_delete=models.CASCADE, related_name="notification_preferences"
+        CustomUser, on_delete=models.CASCADE, related_name="user_notification_preferences"
     )
     email_marketing = models.BooleanField(default=False)
     email_security = models.BooleanField(default=True)

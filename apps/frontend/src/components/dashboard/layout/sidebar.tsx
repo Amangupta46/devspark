@@ -4,17 +4,19 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Briefcase, 
-  FileText, 
-  CreditCard, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  FileText,
+  CreditCard,
+  Settings,
   ChevronLeft,
   ChevronRight,
   Bell,
-  Search
+  TrendingUp,
+  UsersRound,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +26,10 @@ const NAV_ITEMS = [
   { label: "Projects", href: "/dashboard/projects", icon: Briefcase },
   { label: "Quotes", href: "/dashboard/quotes", icon: FileText },
   { label: "Finance", href: "/dashboard/finance", icon: CreditCard },
+  { label: "Team", href: "/dashboard/team", icon: UsersRound },
+  { label: "Notifications", href: "/dashboard/notifications", icon: Bell },
+  { label: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
+  { label: "Client Portal", href: "/dashboard/client-portal", icon: Globe },
 ];
 
 export function Sidebar() {
@@ -35,10 +41,10 @@ export function Sidebar() {
       initial={{ width: 260 }}
       animate={{ width: isCollapsed ? 80 : 260 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="relative flex flex-col h-screen border-r border-border-default bg-surface-base z-20"
+      className="border-border-default bg-surface-base relative z-20 flex h-screen flex-col border-r"
     >
       {/* Header / Logo */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-border-default">
+      <div className="border-border-default flex h-16 items-center justify-between border-b px-4">
         <AnimatePresence mode="popLayout">
           {!isCollapsed && (
             <motion.div
@@ -47,10 +53,10 @@ export function Sidebar() {
               exit={{ opacity: 0, x: -10 }}
               className="flex items-center space-x-2 overflow-hidden"
             >
-              <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white font-bold font-heading">
+              <div className="font-heading flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 font-bold text-white">
                 D
               </div>
-              <span className="font-heading font-semibold text-neutral-0 text-lg whitespace-nowrap">
+              <span className="font-heading text-neutral-0 text-lg font-semibold whitespace-nowrap">
                 DevSpark
               </span>
             </motion.div>
@@ -58,8 +64,8 @@ export function Sidebar() {
         </AnimatePresence>
 
         {isCollapsed && (
-          <div className="w-full flex justify-center">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white font-bold font-heading">
+          <div className="flex w-full justify-center">
+            <div className="font-heading flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 font-bold text-white">
               D
             </div>
           </div>
@@ -67,7 +73,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1 custom-scrollbar">
+      <div className="custom-scrollbar flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-6">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
@@ -78,20 +84,20 @@ export function Sidebar() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "flex items-center h-10 rounded-md px-3 transition-colors duration-200",
-                  isActive 
-                    ? "bg-indigo-500/10 text-indigo-400" 
-                    : "text-neutral-400 hover:text-neutral-50 hover:bg-surface-raised"
+                  "flex h-10 items-center rounded-md px-3 transition-colors duration-200",
+                  isActive
+                    ? "bg-indigo-500/10 text-indigo-400"
+                    : "hover:bg-surface-raised text-neutral-400 hover:text-neutral-50",
                 )}
               >
-                <Icon className="w-5 h-5 flex-shrink-0" />
+                <Icon className="h-5 w-5 flex-shrink-0" />
                 <AnimatePresence>
                   {!isCollapsed && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
                       animate={{ opacity: 1, width: "auto" }}
                       exit={{ opacity: 0, width: 0 }}
-                      className="ml-3 font-medium whitespace-nowrap overflow-hidden text-sm"
+                      className="ml-3 overflow-hidden text-sm font-medium whitespace-nowrap"
                     >
                       {item.label}
                     </motion.span>
@@ -104,21 +110,21 @@ export function Sidebar() {
       </div>
 
       {/* Footer Settings */}
-      <div className="p-3 border-t border-border-default">
+      <div className="border-border-default border-t p-3">
         <Link href="/dashboard/settings" className="group outline-none">
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center h-10 rounded-md px-3 text-neutral-400 hover:text-neutral-50 hover:bg-surface-raised transition-colors duration-200"
+            className="hover:bg-surface-raised flex h-10 items-center rounded-md px-3 text-neutral-400 transition-colors duration-200 hover:text-neutral-50"
           >
-            <Settings className="w-5 h-5 flex-shrink-0" />
+            <Settings className="h-5 w-5 flex-shrink-0" />
             <AnimatePresence>
               {!isCollapsed && (
                 <motion.span
                   initial={{ opacity: 0, width: 0 }}
                   animate={{ opacity: 1, width: "auto" }}
                   exit={{ opacity: 0, width: 0 }}
-                  className="ml-3 font-medium whitespace-nowrap overflow-hidden text-sm"
+                  className="ml-3 overflow-hidden text-sm font-medium whitespace-nowrap"
                 >
                   Settings
                 </motion.span>
@@ -131,10 +137,14 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-20 flex h-6 w-6 items-center justify-center rounded-full border border-border-default bg-surface-raised text-neutral-400 hover:text-neutral-50 hover:bg-surface-floating transition-colors z-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        className="border-border-default bg-surface-raised hover:bg-surface-floating absolute top-20 -right-3 z-30 flex h-6 w-6 items-center justify-center rounded-full border text-neutral-400 transition-colors hover:text-neutral-50 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
-        {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+        {isCollapsed ? (
+          <ChevronRight className="h-3.5 w-3.5" />
+        ) : (
+          <ChevronLeft className="h-3.5 w-3.5" />
+        )}
       </button>
     </motion.aside>
   );

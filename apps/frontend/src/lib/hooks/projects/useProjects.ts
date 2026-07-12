@@ -1,14 +1,22 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
 import {
-  getProjects, createProject, updateProject, deleteProject, ProjectFilters,
-  getTasks, createTask, updateTask, deleteTask, TaskFilters,
+  getProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+  ProjectFilters,
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  TaskFilters,
   getTimeLogs,
-  getProjectDashboard
-} from '@/lib/api/projects';
-import { Project, ProjectTask } from '@/types/projects';
-import { PaginationParams } from '@/lib/api/crm';
-import { toast } from 'sonner';
+  getProjectDashboard,
+} from "@/lib/api/projects";
+import { Project, ProjectTask } from "@/types/projects";
+import { PaginationParams } from "@/lib/api/crm";
+import { toast } from "sonner";
 
 // ----------------------------------------------------------------------------
 // Projects
@@ -21,7 +29,7 @@ export function useProjects(filters: ProjectFilters = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -34,7 +42,7 @@ export function useCreateProject() {
     mutationFn: createProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.projects.all });
-      toast.success('Project created successfully');
+      toast.success("Project created successfully");
     },
   });
 }
@@ -47,15 +55,21 @@ export function useUpdateProject() {
       await queryClient.cancelQueries({ queryKey: queryKeys.projects.projects.detail(id) });
       const previous = queryClient.getQueryData<Project>(queryKeys.projects.projects.detail(id));
       if (previous) {
-        queryClient.setQueryData<Project>(queryKeys.projects.projects.detail(id), { ...previous, ...data });
+        queryClient.setQueryData<Project>(queryKeys.projects.projects.detail(id), {
+          ...previous,
+          ...data,
+        });
       }
       return { previous };
     },
     onError: (err, variables, context) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.projects.projects.detail(variables.id), context.previous);
+        queryClient.setQueryData(
+          queryKeys.projects.projects.detail(variables.id),
+          context.previous,
+        );
       }
-      toast.error('Failed to update project');
+      toast.error("Failed to update project");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.projects.detail(variables.id) });
@@ -70,7 +84,7 @@ export function useDeleteProject() {
     mutationFn: deleteProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.projects.all });
-      toast.success('Project deleted successfully');
+      toast.success("Project deleted successfully");
     },
   });
 }
@@ -86,7 +100,7 @@ export function useTasks(filters: TaskFilters = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,
@@ -99,7 +113,7 @@ export function useCreateTask() {
     mutationFn: createTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.tasks.all });
-      toast.success('Task created');
+      toast.success("Task created");
     },
   });
 }
@@ -113,7 +127,10 @@ export function useUpdateTask() {
       await queryClient.cancelQueries({ queryKey: queryKeys.projects.tasks.detail(id) });
       const previous = queryClient.getQueryData<ProjectTask>(queryKeys.projects.tasks.detail(id));
       if (previous) {
-        queryClient.setQueryData<ProjectTask>(queryKeys.projects.tasks.detail(id), { ...previous, ...data });
+        queryClient.setQueryData<ProjectTask>(queryKeys.projects.tasks.detail(id), {
+          ...previous,
+          ...data,
+        });
       }
       return { previous };
     },
@@ -121,7 +138,7 @@ export function useUpdateTask() {
       if (context?.previous) {
         queryClient.setQueryData(queryKeys.projects.tasks.detail(variables.id), context.previous);
       }
-      toast.error('Failed to update task');
+      toast.error("Failed to update task");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.tasks.detail(variables.id) });
@@ -136,7 +153,7 @@ export function useDeleteTask() {
     mutationFn: deleteTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.tasks.all });
-      toast.success('Task deleted');
+      toast.success("Task deleted");
     },
   });
 }
@@ -152,7 +169,7 @@ export function useTimeLogs(filters: PaginationParams = {}) {
     getNextPageParam: (lastPage) => {
       if (!lastPage.next) return undefined;
       const url = new URL(lastPage.next);
-      const page = url.searchParams.get('page');
+      const page = url.searchParams.get("page");
       return page ? parseInt(page, 10) : undefined;
     },
     initialPageParam: 1,

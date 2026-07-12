@@ -47,7 +47,9 @@ class RazorpayGateway(BaseGateway):
 
         return {"intent_id": payment["id"], "status": payment["status"], "raw": payment}
 
-    def refund_payment(self, payment_id: str, amount: float = None, **kwargs) -> Dict[str, Any]:
+    def refund_payment(
+        self, payment_id: str, amount: float | None = None, **kwargs
+    ) -> Dict[str, Any]:
         data = {}
         if amount:
             data["amount"] = int(amount * 100)

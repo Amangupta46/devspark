@@ -17,6 +17,7 @@ import { SocialLoginButton } from "./SocialLoginButton";
 const registerSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
+    company_name: z.string().min(2, "Company Name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
@@ -46,10 +47,16 @@ export function RegisterForm() {
     setSubmitting(true);
     setRegisterError("");
     try {
+      const nameParts = data.name.trim().split(" ");
+      const first_name = nameParts[0] || "";
+      const last_name = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
       await registerUser({
-        name: data.name,
+        first_name,
+        last_name,
         email: data.email,
         password: data.password,
+        company_name: data.company_name,
       });
       router.push("/");
     } catch (error) {
@@ -108,6 +115,26 @@ export function RegisterForm() {
             )}
           />
           {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name.message}</p>}
+        </div>
+
+        <div className="group relative">
+          <label className="mb-1.5 block text-xs font-medium tracking-wider text-neutral-500 uppercase">
+            Company Name
+          </label>
+          <input
+            type="text"
+            {...register("company_name")}
+            placeholder="Acme Corp"
+            className={cn(
+              "w-full rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-neutral-100 transition-all duration-300 outline-none placeholder:text-neutral-600 md:backdrop-blur-sm",
+              errors.company_name
+                ? "border-red-500/60 focus:border-red-400 focus:ring-2 focus:ring-red-500/20"
+                : "border-white/10 hover:border-white/20 focus:border-amber-400/60 focus:ring-2 focus:ring-amber-500/20",
+            )}
+          />
+          {errors.company_name && (
+            <p className="mt-1 text-xs text-red-400">{errors.company_name.message}</p>
+          )}
         </div>
 
         <div className="group relative">

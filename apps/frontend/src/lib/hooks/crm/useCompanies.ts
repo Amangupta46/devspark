@@ -1,8 +1,15 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
-import { getCompanies, getCompany, createCompany, updateCompany, deleteCompany, PaginationParams } from '@/lib/api/crm';
-import { Company } from '@/types/crm';
-import { toast } from 'sonner';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
+import {
+  getCompanies,
+  getCompany,
+  createCompany,
+  updateCompany,
+  deleteCompany,
+  PaginationParams,
+} from "@/lib/api/crm";
+import { Company } from "@/types/crm";
+import { toast } from "sonner";
 
 export function useCompanies(filters: PaginationParams = {}) {
   return useInfiniteQuery({
@@ -14,7 +21,7 @@ export function useCompanies(filters: PaginationParams = {}) {
       if (!lastPage.next) return undefined;
       try {
         const url = new URL(lastPage.next);
-        const page = url.searchParams.get('page');
+        const page = url.searchParams.get("page");
         return page ? parseInt(page, 10) : undefined;
       } catch {
         return undefined;
@@ -38,7 +45,7 @@ export function useCreateCompany() {
     mutationFn: createCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.companies.all });
-      toast.success('Company created successfully');
+      toast.success("Company created successfully");
     },
   });
 }
@@ -60,9 +67,12 @@ export function useUpdateCompany() {
     },
     onError: (err, variables, context) => {
       if (context?.previousCompany) {
-        queryClient.setQueryData(queryKeys.crm.companies.detail(variables.id), context.previousCompany);
+        queryClient.setQueryData(
+          queryKeys.crm.companies.detail(variables.id),
+          context.previousCompany,
+        );
       }
-      toast.error('Failed to update company');
+      toast.error("Failed to update company");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.companies.detail(variables.id) });
@@ -77,7 +87,7 @@ export function useDeleteCompany() {
     mutationFn: deleteCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.companies.all });
-      toast.success('Company deleted successfully');
+      toast.success("Company deleted successfully");
     },
   });
 }

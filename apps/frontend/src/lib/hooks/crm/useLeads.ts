@@ -1,8 +1,8 @@
-import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query/keys';
-import { getLeads, getLead, createLead, updateLead, deleteLead, LeadFilters } from '@/lib/api/crm';
-import { Lead } from '@/types/crm';
-import { toast } from 'sonner';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query/keys";
+import { getLeads, getLead, createLead, updateLead, deleteLead, LeadFilters } from "@/lib/api/crm";
+import { Lead } from "@/types/crm";
+import { toast } from "sonner";
 
 export function useLeads(filters: LeadFilters = {}) {
   return useInfiniteQuery({
@@ -14,7 +14,7 @@ export function useLeads(filters: LeadFilters = {}) {
       if (!lastPage.next) return undefined;
       try {
         const url = new URL(lastPage.next);
-        const page = url.searchParams.get('page');
+        const page = url.searchParams.get("page");
         return page ? parseInt(page, 10) : undefined;
       } catch {
         return undefined;
@@ -38,7 +38,7 @@ export function useCreateLead() {
     mutationFn: createLead,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.leads.all });
-      toast.success('Lead created successfully');
+      toast.success("Lead created successfully");
     },
   });
 }
@@ -62,7 +62,7 @@ export function useUpdateLead() {
       if (context?.previousLead) {
         queryClient.setQueryData(queryKeys.crm.leads.detail(variables.id), context.previousLead);
       }
-      toast.error('Failed to update lead');
+      toast.error("Failed to update lead");
     },
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.leads.detail(variables.id) });
@@ -77,7 +77,7 @@ export function useDeleteLead() {
     mutationFn: deleteLead,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.crm.leads.all });
-      toast.success('Lead deleted successfully');
+      toast.success("Lead deleted successfully");
     },
   });
 }

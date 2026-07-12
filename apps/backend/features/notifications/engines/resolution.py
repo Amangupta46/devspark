@@ -14,7 +14,7 @@ class RecipientResolutionEngine:
 
     @staticmethod
     def resolve(payload: dict) -> List[User]:
-        recipients = set()
+        recipients: set[str] = set()
 
         # 1. Direct user IDs
         if "user_ids" in payload:

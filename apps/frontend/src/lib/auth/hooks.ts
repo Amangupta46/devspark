@@ -1,4 +1,4 @@
-import { useAuth } from './auth-provider';
+import { useAuth } from "./auth-provider";
 
 export function useCurrentUser() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -10,11 +10,11 @@ export function useRole() {
   return {
     role: user?.role,
     isLoading,
-    isSuperAdmin: user?.role === 'SUPER_ADMIN',
-    isAdmin: user?.role === 'ADMIN',
-    isProjectManager: user?.role === 'PROJECT_MANAGER',
-    isDeveloper: user?.role === 'DEVELOPER',
-    isClient: user?.role === 'CLIENT',
+    isSuperAdmin: user?.role === "SUPER_ADMIN",
+    isAdmin: user?.role === "ADMIN",
+    isProjectManager: user?.role === "PROJECT_MANAGER",
+    isDeveloper: user?.role === "DEVELOPER",
+    isClient: user?.role === "CLIENT",
   };
 }
 
@@ -22,7 +22,7 @@ export function useRole() {
 export function usePermissions(requiredRole: string) {
   const { role, isLoading } = useRole();
   return {
-    hasPermission: role === requiredRole || role === 'SUPER_ADMIN',
+    hasPermission: role === requiredRole || role === "SUPER_ADMIN",
     isLoading,
   };
 }

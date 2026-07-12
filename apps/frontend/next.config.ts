@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
+  output: "standalone",
+
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -14,6 +18,7 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-select",
     ],
   },
+
   images: {
     remotePatterns: [
       {
@@ -22,8 +27,34 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
   productionBrowserSourceMaps: true,
+
   async headers() {
+    // Development: Don't apply CSP
+    if (isDev) {
+      return [
+        {
+          source: "/(.*)",
+          headers: [
+            {
+              key: "X-Content-Type-Options",
+              value: "nosniff",
+            },
+            {
+              key: "X-Frame-Options",
+              value: "DENY",
+            },
+            {
+              key: "Referrer-Policy",
+              value: "strict-origin-when-cross-origin",
+            },
+          ],
+        },
+      ];
+    }
+
+    // Production
     return [
       {
         source: "/(.*)",
@@ -50,8 +81,17 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' data:",
+              "connect-src 'self' https:",
+              "frame-ancestors 'none'",
+              "object-src 'none'",
+              "base-uri 'self'",
+            ].join("; "),
           },
         ],
       },

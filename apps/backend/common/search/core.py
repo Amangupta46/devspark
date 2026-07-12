@@ -17,7 +17,7 @@ class SearchRegistry:
         cls._indices[index.index_name] = index
 
     @classmethod
-    def get_index(cls, index_name: str) -> SearchIndex:
+    def get_index(cls, index_name: str) -> SearchIndex | None:
         return cls._indices.get(index_name)
 
     @classmethod

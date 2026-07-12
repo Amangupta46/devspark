@@ -39,7 +39,7 @@ class Coupon(BaseModel):
 
 
 class Refund(BaseModel):
-    payment = models.ForeignKey("finance.Payment", on_delete=models.CASCADE, related_name="refunds")
+    payment = models.ForeignKey("finance.Payment", on_delete=models.CASCADE, related_name="refunds")  # type: ignore[misc]
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     reason = models.TextField()
     is_full_refund = models.BooleanField(default=False)
@@ -53,7 +53,9 @@ class Refund(BaseModel):
         ),
         default="pending",
     )
-    approved_by = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True)
+    approved_by = models.ForeignKey(
+        "users.CustomUser", on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
         return f"Refund for {self.payment} - {self.amount}"

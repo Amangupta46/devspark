@@ -32,8 +32,10 @@ class StripeGateway(BaseGateway):
         intent = stripe.PaymentIntent.capture(intent_id)
         return {"intent_id": intent.id, "status": intent.status, "raw": intent}
 
-    def refund_payment(self, payment_id: str, amount: float = None, **kwargs) -> Dict[str, Any]:
-        refund_params = {"payment_intent": payment_id}
+    def refund_payment(
+        self, payment_id: str, amount: float | None = None, **kwargs
+    ) -> Dict[str, Any]:
+        refund_params: Dict[str, Any] = {"payment_intent": payment_id}
         if amount:
             refund_params["amount"] = int(amount * 100)
 

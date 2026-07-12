@@ -1,7 +1,7 @@
-import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios';
-import { TokenManager } from '@/lib/auth/token-manager';
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
+import { TokenManager } from "@/lib/auth/token-manager";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 export function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   const token = TokenManager.getAccessToken();
@@ -12,15 +12,17 @@ export function authRequestInterceptor(config: InternalAxiosRequestConfig) {
 }
 
 export function requestLoggerInterceptor(config: InternalAxiosRequestConfig) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     console.log(`[API REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
   }
   return config;
 }
 
 export function responseLoggerInterceptor(response: AxiosResponse) {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[API RESPONSE] ${response.config.method?.toUpperCase()} ${response.config.url} - ${response.status}`);
+  if (process.env.NODE_ENV === "development") {
+    console.log(
+      `[API RESPONSE] ${response.config.method?.toUpperCase()} ${response.config.url} - ${response.status}`,
+    );
   }
   return response;
 }
@@ -40,17 +42,17 @@ export async function errorResponseInterceptor(error: AxiosError, axiosInstance:
 
         const { access } = response.data;
         TokenManager.setTokens(access, refreshToken);
-        
+
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${access}`;
         }
         return axiosInstance(originalRequest);
       } catch {
         TokenManager.clearTokens();
-        window.dispatchEvent(new Event('auth:unauthorized'));
+        window.dispatchEvent(new Event("auth:unauthorized"));
       }
     } else {
-      window.dispatchEvent(new Event('auth:unauthorized'));
+      window.dispatchEvent(new Event("auth:unauthorized"));
     }
   }
 

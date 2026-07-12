@@ -56,7 +56,9 @@ class PayPalGateway(BaseGateway):
         else:
             raise Exception(f"PayPal capture failed: {payment.error}")
 
-    def refund_payment(self, payment_id: str, amount: float = None, **kwargs) -> Dict[str, Any]:
+    def refund_payment(
+        self, payment_id: str, amount: float | None = None, **kwargs
+    ) -> Dict[str, Any]:
         # PayPal expects the sale ID for refunding, which is usually inside the payment's related resources
         # Assuming payment_id here is the sale_id
         sale = paypalrestsdk.Sale.find(payment_id)

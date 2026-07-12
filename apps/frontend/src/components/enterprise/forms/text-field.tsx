@@ -19,25 +19,27 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const hasError = !!error;
 
     return (
-      <div className="flex flex-col w-full gap-1.5">
+      <div className="flex w-full flex-col gap-1.5">
         {label && (
           <label className="text-sm font-medium text-neutral-300">
             {label}
             {props.required && <span className="text-error-400 ml-1">*</span>}
           </label>
         )}
-        
-        <div className="relative flex items-center group">
+
+        <div className="group relative flex items-center">
           {icon && (
-            <div className={cn(
-              "absolute left-3 text-neutral-500 transition-colors duration-200",
-              isFocused ? "text-indigo-400" : "",
-              hasError ? "text-error-400" : ""
-            )}>
+            <div
+              className={cn(
+                "absolute left-3 text-neutral-500 transition-colors duration-200",
+                isFocused ? "text-indigo-400" : "",
+                hasError ? "text-error-400" : "",
+              )}
+            >
               {icon}
             </div>
           )}
-          
+
           <input
             ref={ref}
             onFocus={(e) => {
@@ -49,23 +51,19 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               props.onBlur?.(e);
             }}
             className={cn(
-              "flex h-10 w-full rounded-md border bg-surface-base px-3 py-2 text-sm text-neutral-0 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 outline-none transition-all duration-200",
+              "bg-surface-base text-neutral-0 flex h-10 w-full rounded-md border px-3 py-2 text-sm transition-all duration-200 outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500",
               icon ? "pl-10" : "",
               rightElement ? "pr-10" : "",
-              hasError 
-                ? "border-error-500/50 focus:border-error-500 focus:ring-4 focus:ring-error-500/10" 
+              hasError
+                ? "border-error-500/50 focus:border-error-500 focus:ring-error-500/10 focus:ring-4"
                 : "border-border-default hover:border-border-prominent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10",
-              props.disabled && "cursor-not-allowed opacity-50 hover:border-border-default",
-              className
+              props.disabled && "hover:border-border-default cursor-not-allowed opacity-50",
+              className,
             )}
             {...props}
           />
 
-          {rightElement && (
-            <div className="absolute right-3">
-              {rightElement}
-            </div>
-          )}
+          {rightElement && <div className="absolute right-3">{rightElement}</div>}
         </div>
 
         <AnimatePresence>
@@ -74,19 +72,17 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               initial={{ opacity: 0, y: -4, height: 0 }}
               animate={{ opacity: 1, y: 0, height: "auto" }}
               exit={{ opacity: 0, y: -4, height: 0 }}
-              className="flex items-center gap-1.5 text-xs text-error-400 mt-0.5 overflow-hidden"
+              className="text-error-400 mt-0.5 flex items-center gap-1.5 overflow-hidden text-xs"
             >
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
               <span>{error}</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {hint && !hasError && (
-          <p className="text-xs text-neutral-500 mt-0.5">{hint}</p>
-        )}
+        {hint && !hasError && <p className="mt-0.5 text-xs text-neutral-500">{hint}</p>}
       </div>
     );
-  }
+  },
 );
 TextField.displayName = "TextField";

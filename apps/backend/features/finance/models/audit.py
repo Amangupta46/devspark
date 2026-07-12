@@ -6,7 +6,7 @@ from common.models import BaseModel
 
 
 class FinanceAuditTrail(BaseModel):
-    actor = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True)
+    actor = models.ForeignKey("users.CustomUser", on_delete=models.SET_NULL, null=True, blank=True)
     action = models.CharField(max_length=255, help_text="e.g., invoice_approved, payment_received")
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)

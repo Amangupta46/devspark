@@ -20,7 +20,7 @@ export class RequestManager {
   }
 
   static cancelAll() {
-    this.controllers.forEach(controller => controller.abort());
+    this.controllers.forEach((controller) => controller.abort());
     this.controllers.clear();
   }
 }

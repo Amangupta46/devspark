@@ -1,3 +1,4 @@
+from datetime import timedelta
 from decimal import Decimal
 from typing import List
 
@@ -26,7 +27,7 @@ class BillingService:
             project_id=milestone.project_id,
             currency_id=milestone.currency_id,
             issue_date=timezone.now().date(),
-            due_date=timezone.now().date() + timezone.timedelta(days=15),
+            due_date=timezone.now().date() + timedelta(days=15),
             notes=f"Invoice for milestone: {milestone.name}",
         )
 
@@ -70,7 +71,7 @@ class BillingService:
 
         for idx, pct in enumerate(percentages):
             amount = base_amount * (pct / Decimal("100.0"))
-            due_date = invoice.issue_date + timezone.timedelta(days=(idx + 1) * 30)
+            due_date = invoice.issue_date + timedelta(days=(idx + 1) * 30)
 
             inst = Installment(invoice=invoice, amount=amount, due_date=due_date, status="pending")
             installments.append(inst)

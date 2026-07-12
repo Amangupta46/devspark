@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '@/lib/api/auth';
-import { queryKeys } from '@/lib/query/keys';
-import { TokenManager } from '@/lib/auth/token-manager';
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/lib/api/auth";
+import { queryKeys } from "@/lib/query/keys";
+import { TokenManager } from "@/lib/auth/token-manager";
 
 export function useProfileQuery() {
   return useQuery({

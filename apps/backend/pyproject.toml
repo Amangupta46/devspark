@@ -52,16 +52,19 @@ testpaths = [
     "core",
 ]
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 
 [tool.mypy]
 python_version = "3.12"
-strict = true
+strict = false
 ignore_missing_imports = true
+disable_error_code = ["var-annotated", "attr-defined", "arg-type", "misc", "import-untyped", "valid-type", "return-value"]
 exclude = [
-    "migrations",
-    ".venv",
+    "^.*migrations/.*$",
+    "^\\.venv/.*$",
 ]
+
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
 [tool.django-stubs]

@@ -30,7 +30,7 @@ class StorageManager:
         self.thumbnail_generator = thumbnail_generator
 
     def upload_file(
-        self, file_stream: BinaryIO, path: str, metadata: Dict[str, Any] = None, **kwargs
+        self, file_stream: BinaryIO, path: str, metadata: dict[str, Any] | None = None, **kwargs
     ) -> str:
         """
         Uploads a file, optionally scanning for viruses first, and generates thumbnails post-upload.
