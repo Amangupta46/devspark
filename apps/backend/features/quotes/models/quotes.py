@@ -20,31 +20,45 @@ class Quote(BaseModel):
         ("cancelled", "Cancelled"),
     ]
 
-    organization = models.ForeignKey(
+    organization: models.ForeignKey = models.ForeignKey(
         "team.Organization", on_delete=models.CASCADE, null=True, blank=True, related_name="quotes"
     )
-    quote_number = models.CharField(max_length=50, unique=True)
-    lead = models.ForeignKey(
+    quote_number: models.CharField = models.CharField(max_length=50, unique=True)
+    lead: models.ForeignKey = models.ForeignKey(
         Lead, on_delete=models.SET_NULL, null=True, blank=True, related_name="cpq_quotes"
     )
-    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True, blank=True)
-    contact = models.ForeignKey(Contact, on_delete=models.SET_NULL, null=True, blank=True)
+    company: models.ForeignKey = models.ForeignKey(
+        Company, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    contact: models.ForeignKey = models.ForeignKey(
+        Contact, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="draft")
-    currency = models.CharField(max_length=10, default="USD")
+    status: models.CharField = models.CharField(
+        max_length=30, choices=STATUS_CHOICES, default="draft"
+    )
+    currency: models.CharField = models.CharField(max_length=10, default="USD")
 
-    subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    discount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    tax = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    grand_total = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    subtotal: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
+    discount: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
+    tax: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
+    grand_total: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
 
-    created_by = models.ForeignKey(
+    created_by: models.ForeignKey = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         related_name="quotes_created",
     )
-    approved_by = models.ForeignKey(
+    approved_by: models.ForeignKey = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
@@ -52,30 +66,42 @@ class Quote(BaseModel):
         related_name="quotes_approved",
     )
 
-    expiry_date = models.DateField(null=True, blank=True)
-    version = models.PositiveIntegerField(default=1)
-    notes = models.TextField(blank=True)
+    expiry_date: models.DateField = models.DateField(null=True, blank=True)
+    version: models.PositiveIntegerField = models.PositiveIntegerField(default=1)
+    notes: models.TextField = models.TextField(blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Quote {self.quote_number} ({self.get_status_display()})"
 
 
 class QuoteItem(BaseModel):
-    quote = models.ForeignKey(Quote, on_delete=models.CASCADE, related_name="items")
-    service = models.ForeignKey(ServiceCatalog, on_delete=models.SET_NULL, null=True, blank=True)
-    custom_name = models.CharField(max_length=255, blank=True)
-    description = models.TextField(blank=True)
+    quote: models.ForeignKey = models.ForeignKey(
+        Quote, on_delete=models.CASCADE, related_name="items"
+    )
+    service: models.ForeignKey = models.ForeignKey(
+        ServiceCatalog, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    custom_name: models.CharField = models.CharField(max_length=255, blank=True)
+    description: models.TextField = models.TextField(blank=True)
 
-    quantity = models.PositiveIntegerField(default=1)
-    unit_price = models.DecimalField(max_digits=12, decimal_places=2)
-    discount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    tax = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    line_total = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    quantity: models.PositiveIntegerField = models.PositiveIntegerField(default=1)
+    unit_price: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2
+    )
+    discount: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
+    tax: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
+    line_total: models.DecimalField = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00
+    )
 
-    sort_order = models.PositiveIntegerField(default=0)
+    sort_order: models.PositiveIntegerField = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["sort_order"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.custom_name or self.service.name} x {self.quantity}"

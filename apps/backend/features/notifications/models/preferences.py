@@ -41,7 +41,9 @@ class NotificationPreference(BaseModel):
 
 class OrganizationBranding(BaseModel):
     organization = models.OneToOneField(
-        "team.Organization", on_delete=models.CASCADE, related_name="branding"
+        "team.Organization",
+        on_delete=models.CASCADE,
+        related_name="branding",
     )
     logo_url = models.URLField(blank=True)
     primary_color = models.CharField(max_length=20, default="#000000")
